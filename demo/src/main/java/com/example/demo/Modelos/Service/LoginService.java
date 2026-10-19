@@ -25,4 +25,10 @@ public interface LoginService {
             String passwordActual,
             String nuevaPassword
     );
+
+    void solicitarCambioPassword(String email, String nuevaPassword);
+
+    void aprobarCambioPassword(Long id);
+
+    void rechazarCambioPassword(Long id);
 }

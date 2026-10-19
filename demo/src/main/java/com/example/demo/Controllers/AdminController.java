@@ -115,6 +115,56 @@ public class AdminController {
         return "redirect:/admin/usuarios";
     }
 
+    @PostMapping("/password/aprobar")
+    public String aprobarPassword(
+            @RequestParam Long id,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+
+        Login admin = (Login) session.getAttribute("login");
+
+        if (admin == null) {
+            return "redirect:/login/";
+        }
+
+        if (!admin.esSuperAdmin()) {
+            return "redirect:/";
+        }
+
+        loginService.aprobarCambioPassword(id);
+
+        redirectAttributes.addFlashAttribute(
+                "mensaje",
+                "Contraseña actualizada. La persona ya puede entrar con la nueva.");
+
+        return "redirect:/admin/usuarios";
+    }
+
+    @PostMapping("/password/rechazar")
+    public String rechazarPassword(
+            @RequestParam Long id,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+
+        Login admin = (Login) session.getAttribute("login");
+
+        if (admin == null) {
+            return "redirect:/login/";
+        }
+
+        if (!admin.esSuperAdmin()) {
+            return "redirect:/";
+        }
+
+        loginService.rechazarCambioPassword(id);
+
+        redirectAttributes.addFlashAttribute(
+                "mensaje",
+                "Solicitud rechazada. La contraseña anterior sigue vigente.");
+
+        return "redirect:/admin/usuarios";
+    }
+
     @GetMapping("/crear-cliente")
     public String crearCliente(
             Model model,

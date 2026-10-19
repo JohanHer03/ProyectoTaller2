@@ -21,6 +21,9 @@ public class Login {
 
     private String rol;
 
+    // Nueva contraseña pedida desde el login; pendiente de aprobación del superadmin
+    private String passwordSolicitada;
+
     @OneToOne
     private Cliente cliente;
 
@@ -72,6 +75,18 @@ public class Login {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public String getPasswordSolicitada() {
+        return passwordSolicitada;
+    }
+
+    public void setPasswordSolicitada(String passwordSolicitada) {
+        this.passwordSolicitada = passwordSolicitada;
+    }
+
+    public boolean tieneSolicitudPassword() {
+        return passwordSolicitada != null;
     }
 
     public Cliente getCliente() {

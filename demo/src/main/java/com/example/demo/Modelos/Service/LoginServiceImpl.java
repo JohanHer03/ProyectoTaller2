@@ -105,11 +105,57 @@ public class LoginServiceImpl implements LoginService {
             return false;
         }
 
-        // Cambiar contraseña
+        // Cambiar contraseña; una solicitud pendiente ya no aplica
         login.setPassword(nuevaPassword);
+        login.setPasswordSolicitada(null);
 
         loginDAO.save(login);
 
         return true;
+    }
+
+    @Override
+    @Transactional
+    public void solicitarCambioPassword(String email, String nuevaPassword) {
+
+        Login login = loginDAO.findByEmail(email).orElse(null);
+
+        // El superadmin no tiene quién le apruebe la solicitud
+        if (login == null || login.esSuperAdmin()) {
+            return;
+        }
+
+        login.setPasswordSolicitada(nuevaPassword);
+
+        loginDAO.save(login);
+    }
+
+    @Override
+    @Transactional
+    public void aprobarCambioPassword(Long id) {
+
+        Login login = loginDAO.findById(id).orElse(null);
+
+        if (login != null && login.tieneSolicitudPassword()) {
+
+            login.setPassword(login.getPasswordSolicitada());
+            login.setPasswordSolicitada(null);
+
+            loginDAO.save(login);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void rechazarCambioPassword(Long id) {
+
+        Login login = loginDAO.findById(id).orElse(null);
+
+        if (login != null && login.tieneSolicitudPassword()) {
+
+            login.setPasswordSolicitada(null);
+
+            loginDAO.save(login);
+        }
     }
 }
