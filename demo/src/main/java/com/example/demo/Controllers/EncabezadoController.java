@@ -51,7 +51,7 @@ public class EncabezadoController {
                         return "redirect:/login/";
                 }
 
-                if (!login.getRol().equals("ADMIN")) {
+                if (!login.esAdmin()) {
                         return "redirect:/";
                 }
 
@@ -200,7 +200,7 @@ public class EncabezadoController {
                 }
 
                 // ADMIN puede ver cualquier compra
-                if (login.getRol().equals("ADMIN")) {
+                if (login.esAdmin()) {
 
                         model.addAttribute(
                                         "encabezado",
@@ -292,7 +292,7 @@ public class EncabezadoController {
                         return ResponseEntity.status(401).build();
                 }
 
-                if (!"ADMIN".equals(login.getRol()) && !"CLIENTE".equals(login.getRol())) {
+                if (!login.esAdmin() && !"CLIENTE".equals(login.getRol())) {
                         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                         return "error/403";
                 }

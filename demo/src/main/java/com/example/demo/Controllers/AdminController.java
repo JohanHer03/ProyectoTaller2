@@ -37,7 +37,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esSuperAdmin()) {
             return "redirect:/";
         }
 
@@ -72,7 +72,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!admin.getRol().equals("ADMIN")) {
+        if (!admin.esSuperAdmin()) {
             return "redirect:/";
         }
 
@@ -97,7 +97,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!admin.getRol().equals("ADMIN")) {
+        if (!admin.esSuperAdmin()) {
             return "redirect:/";
         }
 
@@ -126,7 +126,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!admin.getRol().equals("ADMIN")) {
+        if (!admin.esSuperAdmin()) {
             return "redirect:/";
         }
 
@@ -151,7 +151,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!admin.getRol().equals("ADMIN")) {
+        if (!admin.esSuperAdmin()) {
             return "redirect:/";
         }
 
@@ -209,7 +209,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!"ADMIN".equals(login.getRol())) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -246,7 +246,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!"ADMIN".equals(login.getRol())) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -284,7 +284,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!"ADMIN".equals(login.getRol())) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -347,7 +347,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -376,7 +376,7 @@ public class AdminController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 

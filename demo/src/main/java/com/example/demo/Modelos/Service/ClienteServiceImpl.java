@@ -47,13 +47,19 @@ public class ClienteServiceImpl implements ClienteService {
                     "El cliente no existe.");
         }
 
+        Login login = loginDAO.findByClienteId(id).orElse(null);
+
+        if (login != null && login.esSuperAdmin()) {
+
+            throw new RuntimeException(
+                    "No se puede eliminar al superadministrador.");
+        }
+
         if (encabezadoDAO.existsByClienteId(id)) {
 
             throw new RuntimeException(
                     "No se puede eliminar el cliente porque tiene compras registradas.");
         }
-
-        Login login = loginDAO.findByClienteId(id).orElse(null);
 
         if (login != null) {
             loginDAO.delete(login);

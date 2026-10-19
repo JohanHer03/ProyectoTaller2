@@ -143,7 +143,7 @@
                   <!-- ADMIN -->
                   <div th:if="${admin}">
                     <!-- Otro usuario -->
-                    <div th:if="${usuario.id != adminId}">
+                    <div th:if="${!usuario.esSuperAdmin()}">
                       <form
                         th:action="@{/admin/modificar-rol}"
                         method="post"
@@ -183,18 +183,17 @@
                       </form>
                     </div>
 
-                    <!-- Propio ADMIN -->
+                    <!-- Superadmin: rol fijo -->
 
-                    <div th:if="${usuario.id == adminId}">
+                    <div th:if="${usuario.esSuperAdmin()}">
                       <span
                         class="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-700"
-                        th:text="${usuario.rol}"
                       >
-                        ADMIN
+                        Superadministrador
                       </span>
 
                       <p class="text-xs text-slate-400 mt-1">
-                        Tu rol no puede modificarse.
+                        Este rol no se puede cambiar.
                       </p>
                     </div>
                   </div>

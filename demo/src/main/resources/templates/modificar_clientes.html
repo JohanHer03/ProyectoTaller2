@@ -158,8 +158,8 @@
         </form>
       </div>
 
-      <!-- MODIFICAR ROL: SOLO ADMIN -->
-      <div th:if="${admin}" class="bg-white rounded-2xl shadow-xl p-8 mt-6">
+      <!-- MODIFICAR ROL: SOLO SUPERADMIN -->
+      <div th:if="${superadmin}" class="bg-white rounded-2xl shadow-xl p-8 mt-6">
         <div class="mb-6">
           <h2 class="text-xl font-bold text-slate-800">
             Administración de usuario
@@ -170,8 +170,18 @@
           </p>
         </div>
 
+        <!-- Cuenta del superadmin: su rol es fijo -->
+        <div
+          th:if="${usuario != null and usuario.esSuperAdmin()}"
+          class="rounded-lg border border-purple-200 bg-purple-50 px-4 py-3 text-purple-700"
+        >
+          <p class="text-sm font-medium">
+            Esta es la cuenta de superadministrador. Su rol no se puede cambiar.
+          </p>
+        </div>
+
         <!-- Usuario encontrado -->
-        <div th:if="${usuario != null}">
+        <div th:if="${usuario != null and !usuario.esSuperAdmin()}">
           <form
             th:action="@{/admin/modificar-rol}"
             method="post"

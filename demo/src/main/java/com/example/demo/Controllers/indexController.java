@@ -1,6 +1,7 @@
 package com.example.demo.Controllers;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.Modelos.Entity.Login;
@@ -11,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 public class indexController {
 
     @GetMapping("/")
-    public String inicio(HttpSession session) {
+    public String inicio(Model model, HttpSession session) {
 
         Login login = (Login) session.getAttribute("login");
 
@@ -19,7 +20,10 @@ public class indexController {
             return "redirect:/login/";
         }
 
-        if (login.getRol().equals("ADMIN")) {
+        if (login.esAdmin()) {
+
+            model.addAttribute("superadmin", login.esSuperAdmin());
+
             return "index";
         }
 

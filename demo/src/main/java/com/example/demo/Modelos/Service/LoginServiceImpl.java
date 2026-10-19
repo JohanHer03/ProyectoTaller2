@@ -56,7 +56,8 @@ public class LoginServiceImpl implements LoginService {
 
         Login login = loginDAO.findById(id).orElse(null);
 
-        if (login != null) {
+        // El superadmin no puede ser modificado
+        if (login != null && !login.esSuperAdmin()) {
 
             login.setEstado("ACTIVO");
             login.setRol(rol);
@@ -71,7 +72,8 @@ public class LoginServiceImpl implements LoginService {
 
         Login login = loginDAO.findById(id).orElse(null);
 
-        if (login != null) {
+        // El superadmin no puede ser modificado
+        if (login != null && !login.esSuperAdmin()) {
 
             login.setRol(rol);
 

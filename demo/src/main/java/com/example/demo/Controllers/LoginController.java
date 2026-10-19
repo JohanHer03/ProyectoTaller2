@@ -55,7 +55,7 @@ public class LoginController {
 
         session.setAttribute("login", login);
 
-        if (login.getRol().equals("ADMIN")) {
+        if (login.esAdmin()) {
             if (login.getCliente() == null) {
 
                 return "redirect:/admin/perfil";

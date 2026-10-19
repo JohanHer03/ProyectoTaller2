@@ -81,4 +81,13 @@ public class Login {
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    // El superadmin tiene todos los permisos de un admin
+    public boolean esAdmin() {
+        return "ADMIN".equals(rol) || "SUPERADMIN".equals(rol);
+    }
+
+    public boolean esSuperAdmin() {
+        return "SUPERADMIN".equals(rol);
+    }
 }
