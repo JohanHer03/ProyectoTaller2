@@ -55,7 +55,7 @@ public class ClienteController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -160,7 +160,7 @@ public class ClienteController {
             return "redirect:/cliente/perfil";
         }
 
-        if (login.getRol().equals("ADMIN")) {
+        if (login.esAdmin()) {
 
             if (cliente.getId() == null) {
                 return "redirect:/cliente/listar";
@@ -194,7 +194,7 @@ public class ClienteController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -209,6 +209,7 @@ public class ClienteController {
         model.addAttribute("cliente", cliente);
         model.addAttribute("titulo", "Editar cliente");
         model.addAttribute("admin", true);
+        model.addAttribute("superadmin", login.esSuperAdmin());
         model.addAttribute("usuario", usuario);
 
         return "modificar_clientes";
@@ -226,7 +227,7 @@ public class ClienteController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 

@@ -32,7 +32,7 @@ public class ProductoController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -50,7 +50,7 @@ public class ProductoController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -72,7 +72,7 @@ public class ProductoController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -94,7 +94,7 @@ public class ProductoController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 
@@ -122,7 +122,7 @@ public class ProductoController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
         Producto producto = productoService.encontrarProducto(id);
@@ -145,7 +145,7 @@ public class ProductoController {
             return "redirect:/login/";
         }
 
-        if (!login.getRol().equals("ADMIN")) {
+        if (!login.esAdmin()) {
             return "redirect:/";
         }
 

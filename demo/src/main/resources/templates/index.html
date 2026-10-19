@@ -97,8 +97,9 @@
             </p>
           </a>
 
-        <!-- Crear cliente -->
+        <!-- Crear cliente: solo superadmin -->
         <a
+          th:if="${superadmin}"
           th:href="@{/admin/crear-cliente}"
           class="group bg-white rounded-xl shadow-md p-6 border border-slate-200 transition duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300"
         >
@@ -133,8 +134,9 @@
           </p>
         </a>
 
-        <!-- Gestionar usuarios -->
+        <!-- Gestionar usuarios: solo superadmin -->
         <a
+          th:if="${superadmin}"
           th:href="@{/admin/usuarios}"
           class="group bg-white rounded-xl shadow-md p-6 border border-slate-200 transition duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300"
         >
