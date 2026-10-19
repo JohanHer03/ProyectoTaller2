@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <!-- Cabecera común: fuentes y hoja de estilos -->
+  <head th:fragment="head(titulo)">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${titulo} + ' | LuiPaoxYin'">LuiPaoxYin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" th:href="@{/css/tienda.css}" />
+  </head>
+
+  <body>
+    <!-- Barra superior: la navegación depende del rol -->
+    <header class="barra no-imprimir" th:fragment="barra(seccion)">
+      <div class="barra-interior">
+        <a class="marca" th:href="@{/}">
+          <span class="marca-tecla" aria-hidden="true">LP</span>
+          LuiPaoxYin
+        </a>
+
+        <th:block th:if="${usuarioActual != null}">
+          <!-- Admin y superadmin -->
+          <nav
+            class="nav"
+            aria-label="Principal"
+            th:if="${usuarioActual.esAdmin()}"
+          >
+            <a
+              th:href="@{/}"
+              th:aria-current="${seccion == 'inicio'} ? 'page' : null"
+              >Inicio</a
+            >
+            <a
+              th:href="@{/producto/listar}"
+              th:aria-current="${seccion == 'productos'} ? 'page' : null"
+              >Productos</a
+            >
+            <a
+              th:href="@{/cliente/listar}"
+              th:aria-current="${seccion == 'clientes'} ? 'page' : null"
+              >Clientes</a
+            >
+            <a
+              th:href="@{/encabezado/}"
+              th:aria-current="${seccion == 'compras'} ? 'page' : null"
+              >Compras</a
+            >
+            <a
+              th:if="${usuarioActual.esSuperAdmin()}"
+              th:href="@{/admin/usuarios}"
+              th:aria-current="${seccion == 'usuarios'} ? 'page' : null"
+              >Usuarios</a
+            >
+          </nav>
+
+          <!-- Cliente -->
+          <nav
+            class="nav"
+            aria-label="Principal"
+            th:unless="${usuarioActual.esAdmin()}"
+          >
+            <a
+              th:href="@{/cliente/}"
+              th:aria-current="${seccion == 'inicio'} ? 'page' : null"
+              >Inicio</a
+            >
+            <a
+              th:href="@{/encabezado/comprar}"
+              th:aria-current="${seccion == 'tienda'} ? 'page' : null"
+              >Tienda</a
+            >
+            <a
+              th:href="@{/encabezado/mis-compras}"
+              th:aria-current="${seccion == 'mis-compras'} ? 'page' : null"
+              >Mis compras</a
+            >
+          </nav>
+
+          <div class="cuenta">
+            <span
+              class="estado estado-rol"
+              th:if="${usuarioActual.esSuperAdmin()}"
+              >Superadmin</span
+            >
+            <span
+              class="estado estado-rol"
+              th:if="${usuarioActual.esAdmin() and !usuarioActual.esSuperAdmin()}"
+              >Admin</span
+            >
+            <a
+              class="cuenta-correo"
+              th:href="${usuarioActual.esAdmin()} ? @{/admin/perfil} : @{/cliente/perfil}"
+              th:text="${usuarioActual.email}"
+              title="Mi perfil"
+              >correo</a
+            >
+            <a class="tecla tecla-sm" th:href="@{/login/salir}">Salir</a>
+          </div>
+        </th:block>
+      </div>
+    </header>
+
+    <!-- Mensajes de error y de éxito -->
+    <th:block th:fragment="avisos">
+      <div
+        class="aviso aviso-error"
+        role="alert"
+        th:if="${error}"
+        th:text="${error}"
+      ></div>
+      <div
+        class="aviso aviso-exito"
+        role="status"
+        th:if="${mensaje}"
+        th:text="${mensaje}"
+      ></div>
+    </th:block>
+
+    <footer class="pie no-imprimir" th:fragment="pie">
+      LuiPaoxYin, accesorios de tecnología
+    </footer>
+  </body>
+</html>

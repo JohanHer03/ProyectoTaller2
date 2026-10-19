@@ -1,0 +1,910 @@
+/* =========================================================
+   LuiPaoxYin — tema "Teclado mecánico"
+   Aluminio de fondo, teclas como superficies y botones,
+   un único acento amarillo (la tecla Enter).
+   ========================================================= */
+
+:root {
+  --aluminio: #e6e8eb;
+  --tecla: #fafaf8;
+  --grafito: #2a2d34;
+  --grafito-hondo: #16181c;
+  --gris: #646973;
+  --linea: #cdd1d6;
+  --linea-suave: #e3e5e8;
+  --enter: #f2c230;
+  --enter-hondo: #b98c0e;
+  --stock: #2f7d50;
+  --stock-fondo: #e3f1e8;
+  --alerta: #c23b2e;
+  --alerta-fondo: #f8e6e3;
+  --pendiente: #8a6206;
+  --pendiente-fondo: #fbf1d6;
+  --rol: #4a4f8c;
+  --rol-fondo: #e9eaf5;
+
+  --texto: "Barlow", system-ui, sans-serif;
+  --titular: "Barlow Condensed", "Barlow", system-ui, sans-serif;
+
+  --radio-tecla: 8px;
+  --radio-hoja: 12px;
+  --ancho: 1080px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--aluminio);
+  color: var(--grafito);
+  font-family: var(--texto);
+  font-size: 1rem;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--titular);
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: 0.005em;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--grafito);
+  outline-offset: 2px;
+}
+
+/* ---------- Barra superior ---------- */
+
+.barra {
+  background: var(--tecla);
+  border-bottom: 1px solid var(--linea);
+}
+
+.barra-interior {
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-family: var(--titular);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: 0.01em;
+}
+
+/* Logo: una tecla con las iniciales */
+.marca-tecla {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 6px;
+  background: var(--grafito);
+  color: var(--enter);
+  border-bottom: 3px solid var(--grafito-hondo);
+  font-size: 0.95rem;
+  letter-spacing: 0;
+}
+
+.nav {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.nav a {
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--gris);
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+}
+
+.nav a:hover {
+  color: var(--grafito);
+  background: var(--aluminio);
+}
+
+.nav a[aria-current="page"] {
+  color: var(--grafito);
+  box-shadow: inset 0 -2px 0 var(--enter);
+  border-radius: 0;
+}
+
+.cuenta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.cuenta-correo {
+  color: var(--gris);
+  text-decoration: none;
+}
+
+.cuenta-correo:hover {
+  color: var(--grafito);
+  text-decoration: underline;
+}
+
+/* ---------- Página ---------- */
+
+.pagina {
+  flex: 1;
+  width: 100%;
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3rem;
+}
+
+.pagina-angosta {
+  max-width: 640px;
+}
+
+.cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
+
+.cabecera h1 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+}
+
+.cabecera p {
+  color: var(--gris);
+  margin-top: 0.35rem;
+  max-width: 60ch;
+}
+
+.acciones {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.pie {
+  text-align: center;
+  color: var(--gris);
+  font-size: 0.8rem;
+  padding: 1.5rem 1rem 2rem;
+}
+
+/* ---------- Superficies ---------- */
+
+.hoja {
+  background: var(--tecla);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-hoja);
+  padding: 1.75rem;
+}
+
+.hoja + .hoja {
+  margin-top: 1.25rem;
+}
+
+.hoja-titulo {
+  font-size: 1.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.hoja-nota {
+  color: var(--gris);
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+
+.hoja-tabla {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ---------- Teclas (botones) ---------- */
+
+.tecla {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-decoration: none;
+  color: var(--grafito);
+  background: var(--tecla);
+  border: 1px solid var(--linea);
+  border-bottom: 4px solid #b4b9c0;
+  border-radius: var(--radio-tecla);
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  transition: transform 80ms ease, border-bottom-width 80ms ease;
+}
+
+.tecla:hover {
+  background: #fff;
+}
+
+/* La tecla se hunde al presionarla */
+.tecla:active {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+  margin-bottom: 2px;
+}
+
+.tecla-enter {
+  background: var(--enter);
+  border-color: var(--enter-hondo);
+  border-bottom-color: var(--enter-hondo);
+}
+
+.tecla-enter:hover {
+  background: #f5cc4a;
+}
+
+.tecla-grafito {
+  background: var(--grafito);
+  color: #fff;
+  border-color: var(--grafito-hondo);
+  border-bottom-color: var(--grafito-hondo);
+}
+
+.tecla-grafito:hover {
+  background: #363a43;
+}
+
+.tecla-peligro {
+  color: var(--alerta);
+}
+
+.tecla-peligro:hover {
+  background: var(--alerta-fondo);
+}
+
+.tecla-sm {
+  font-size: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  border-bottom-width: 3px;
+}
+
+.tecla-ancha {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 1.05rem;
+}
+
+/* Leyenda secundaria dentro de una tecla, como "↵" o "Esc" */
+.leyenda {
+  font-weight: 500;
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+/* ---------- Teclado del panel (menú principal) ---------- */
+
+.teclado {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+  padding: 1rem;
+  background: var(--grafito);
+  border-radius: 16px;
+  border-bottom: 6px solid var(--grafito-hondo);
+}
+
+.tecla-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 8.5rem;
+  padding: 0.9rem 1rem 1rem;
+  text-decoration: none;
+  color: var(--grafito);
+  background: var(--tecla);
+  border-radius: 10px;
+  border-bottom: 6px solid #b4b9c0;
+  transition: transform 80ms ease, border-bottom-width 80ms ease;
+}
+
+.tecla-menu:hover {
+  background: #fff;
+}
+
+.tecla-menu:active {
+  transform: translateY(3px);
+  border-bottom-width: 3px;
+  margin-bottom: 3px;
+}
+
+.tecla-menu h3 {
+  font-size: 1.35rem;
+}
+
+.tecla-menu p {
+  font-size: 0.875rem;
+  color: var(--gris);
+  margin-top: 0.75rem;
+}
+
+.tecla-menu.doble {
+  grid-column: span 2;
+}
+
+.tecla-menu.enter {
+  background: var(--enter);
+  border-bottom-color: var(--enter-hondo);
+}
+
+.tecla-menu.enter p {
+  color: #5c4708;
+}
+
+.tecla-menu.oscura {
+  background: #3a3e47;
+  color: #fff;
+  border-bottom-color: #1f2126;
+}
+
+.tecla-menu.oscura p {
+  color: #c4c8cf;
+}
+
+@media (max-width: 760px) {
+  .teclado {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .teclado {
+    grid-template-columns: 1fr;
+  }
+
+  .tecla-menu.doble {
+    grid-column: auto;
+  }
+}
+
+/* ---------- Tablas ---------- */
+
+.tabla-desliza {
+  overflow-x: auto;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.tabla th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--gris);
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--linea);
+  white-space: nowrap;
+}
+
+.tabla td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--linea-suave);
+  vertical-align: middle;
+}
+
+.tabla tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.tabla tbody tr:hover {
+  background: #f3f4f5;
+}
+
+.tabla .num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.tabla .acciones {
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+
+.tabla-pie {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.1rem 1.25rem;
+  border-top: 1px solid var(--linea);
+  background: #f3f4f5;
+}
+
+.fuerte {
+  font-weight: 600;
+}
+
+.tenue {
+  color: var(--gris);
+}
+
+.descripcion {
+  color: var(--gris);
+  font-size: 0.9rem;
+  max-width: 42ch;
+}
+
+/* ---------- Estados ---------- */
+
+.estado {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.estado-ok {
+  color: var(--stock);
+  background: var(--stock-fondo);
+}
+
+.estado-alerta {
+  color: var(--alerta);
+  background: var(--alerta-fondo);
+}
+
+.estado-pendiente {
+  color: var(--pendiente);
+  background: var(--pendiente-fondo);
+}
+
+.estado-rol {
+  color: var(--rol);
+  background: var(--rol-fondo);
+}
+
+.estado-neutro {
+  color: var(--gris);
+  background: var(--aluminio);
+}
+
+/* ---------- Avisos ---------- */
+
+.aviso {
+  border-radius: var(--radio-tecla);
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+  border-left: 4px solid;
+}
+
+.aviso-error {
+  color: var(--alerta);
+  background: var(--alerta-fondo);
+}
+
+.aviso-exito {
+  color: var(--stock);
+  background: var(--stock-fondo);
+}
+
+.aviso-info {
+  color: var(--rol);
+  background: var(--rol-fondo);
+}
+
+/* ---------- Formularios ---------- */
+
+.formulario {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.campo label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--grafito);
+  background: #fff;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-tecla);
+  padding: 0.7rem 0.85rem;
+}
+
+.campo textarea {
+  resize: vertical;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: 2px solid var(--grafito);
+  outline-offset: 0;
+  border-color: var(--grafito);
+}
+
+.campo input[readonly] {
+  background: var(--aluminio);
+  color: var(--gris);
+}
+
+.campo-ayuda {
+  font-size: 0.85rem;
+  color: var(--gris);
+  margin-top: 0.35rem;
+}
+
+.campo-error {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--alerta);
+  margin-top: 0.35rem;
+}
+
+.fila-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+
+@media (max-width: 560px) {
+  .fila-campos {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-en-linea {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.form-en-linea select {
+  font: inherit;
+  font-size: 0.9rem;
+  border: 1px solid var(--linea);
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  background: #fff;
+  color: var(--grafito);
+}
+
+/* ---------- Ficha de datos (perfil, compra) ---------- */
+
+.ficha {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 2rem;
+  margin: 0;
+}
+
+.ficha dt {
+  font-size: 0.85rem;
+  color: var(--gris);
+}
+
+.ficha dd {
+  margin: 0.15rem 0 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 560px) {
+  .ficha {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Vacío ---------- */
+
+.vacio {
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.vacio h2 {
+  font-size: 1.6rem;
+}
+
+.vacio p {
+  color: var(--gris);
+  margin: 0.5rem auto 1.25rem;
+  max-width: 44ch;
+}
+
+/* ---------- Acceso (login, registro) ---------- */
+
+.acceso {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+}
+
+.acceso-caja {
+  width: 100%;
+  max-width: 400px;
+}
+
+.acceso .marca {
+  margin-bottom: 1.5rem;
+}
+
+.acceso h1 {
+  font-size: 2.25rem;
+  margin-bottom: 0.35rem;
+}
+
+.acceso-nota {
+  color: var(--gris);
+  margin-bottom: 1.5rem;
+}
+
+.acceso-alterno {
+  margin-top: 1.25rem;
+  text-align: center;
+  color: var(--gris);
+  font-size: 0.95rem;
+}
+
+.acceso-alterno a {
+  color: var(--grafito);
+  font-weight: 600;
+}
+
+/* ---------- Tienda (compra) ---------- */
+
+.productos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.producto {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 1rem 1.5rem;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--linea-suave);
+}
+
+.producto:last-child {
+  border-bottom: 0;
+}
+
+.producto h3 {
+  font-size: 1.3rem;
+}
+
+.producto .descripcion {
+  margin-top: 0.25rem;
+}
+
+.producto-precio {
+  text-align: right;
+}
+
+.producto-precio strong {
+  display: block;
+  font-size: 1.15rem;
+}
+
+.producto-precio span {
+  font-size: 0.85rem;
+  color: var(--gris);
+}
+
+/* Selector de cantidad: dos teclas pequeñas y un visor */
+.cantidad {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.cantidad input {
+  width: 3.5rem;
+  text-align: center;
+  font: inherit;
+  font-weight: 600;
+  border: 1px solid var(--linea);
+  border-radius: 6px;
+  padding: 0.4rem 0.25rem;
+  background: #fff;
+  color: var(--grafito);
+  -moz-appearance: textfield;
+}
+
+.cantidad input::-webkit-outer-spin-button,
+.cantidad input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cantidad .tecla {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+.producto.elegido {
+  background: #fdf8e6;
+}
+
+.caja-total {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  background: var(--tecla);
+  border-top: 1px solid var(--linea);
+}
+
+.caja-total-cifra {
+  font-family: var(--titular);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.caja-total-etiqueta {
+  color: var(--gris);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .producto {
+    grid-template-columns: 1fr auto;
+  }
+
+  .producto-info {
+    grid-column: 1 / -1;
+  }
+
+  .producto-precio {
+    text-align: left;
+  }
+
+  .pagina {
+    padding-top: 1.75rem;
+  }
+
+  .hoja:not(.hoja-tabla) {
+    padding: 1.25rem;
+  }
+
+  .producto {
+    padding: 1.1rem 1.25rem;
+  }
+
+  /* Barra: marca y cuenta arriba, navegación abajo a todo el ancho */
+  .barra-interior {
+    gap: 0.5rem 1rem;
+    justify-content: space-between;
+  }
+
+  .nav {
+    order: 3;
+    flex-basis: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin: 0 -0.5rem;
+  }
+
+  .nav a {
+    white-space: nowrap;
+  }
+
+  .cuenta-correo {
+    display: none;
+  }
+}
+
+/* ---------- Página de error ---------- */
+
+.error-codigo {
+  font-family: var(--titular);
+  font-weight: 700;
+  font-size: 5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tecla,
+  .tecla-menu {
+    transition: none;
+  }
+
+  .tecla:active,
+  .tecla-menu:active {
+    transform: none;
+  }
+}
+
+@media print {
+  .barra,
+  .no-imprimir,
+  .pie {
+    display: none;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .hoja {
+    border: 0;
+  }
+}
+
+/* ---------- Utilidades ---------- */
+
+.acciones-pie {
+  margin-top: 1.25rem;
+}
+
+.visualmente-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
