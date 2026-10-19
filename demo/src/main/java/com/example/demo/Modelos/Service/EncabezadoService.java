@@ -11,7 +11,7 @@ public interface EncabezadoService {
 
     Encabezado encontrarEncabezado(Long id);
 
-    void realizarCompra(Long clienteId, List<Detalle> detalles);
+    Encabezado realizarCompra(Long clienteId, List<Detalle> detalles);
 
     List<Detalle> listarDetalles(Long idEncabezado);
 

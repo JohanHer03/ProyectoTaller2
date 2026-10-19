@@ -161,11 +161,15 @@ public class EncabezadoController {
                                 return "redirect:/encabezado/comprar";
                         }
 
-                        encabezadoService.realizarCompra(
+                        Encabezado encabezado = encabezadoService.realizarCompra(
                                         clienteId,
                                         detalles);
 
-                        return "redirect:/cliente/";
+                        redirectAttributes.addFlashAttribute(
+                                        "mensaje",
+                                        "Compra realizada con éxito.");
+
+                        return "redirect:/encabezado/detalles/" + encabezado.getId();
 
                 } catch (RuntimeException e) {
 
