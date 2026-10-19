@@ -44,7 +44,7 @@ public class EncabezadoServiceImpl implements EncabezadoService {
     }
 
     @Transactional
-    public void realizarCompra(Long clienteId, List<Detalle> detalles) {
+    public Encabezado realizarCompra(Long clienteId, List<Detalle> detalles) {
 
         double total = 0;
 
@@ -99,6 +99,8 @@ public class EncabezadoServiceImpl implements EncabezadoService {
 
             productoDAO.save(producto);
         }
+
+        return encabezado;
     }
 
     @Override
