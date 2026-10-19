@@ -1,166 +1,60 @@
 <!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: head('Clientes')}"></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header th:replace="~{fragmentos :: barra('clientes')}"></header>
 
-    <title th:text="${titulo}">Listado de clientes</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100">
-    <div class="max-w-7xl mx-auto px-6 py-10">
-      <!-- Encabezado -->
-      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
-        <div
-          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-        >
-          <div>
-            <p class="text-sm font-medium text-blue-600 mb-1">
-              Panel de administrador
-            </p>
-
-            <h1
-              th:text="${titulo}"
-              class="text-3xl font-bold text-slate-800"
-            ></h1>
-
-            <p class="text-slate-500 mt-2">
-              Consulta y administra los clientes registrados.
-            </p>
-          </div>
-
-          <a
-            th:href="@{/}"
-            class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
-          >
-            ← Inicio
-          </a>
+    <main class="pagina">
+      <div class="cabecera">
+        <div>
+          <h1>Clientes</h1>
+          <p>Las personas registradas con datos personales en la tienda.</p>
         </div>
       </div>
 
-      <!-- Mensaje de error -->
-      <div
-        th:if="${error}"
-        class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700"
-      >
-        <p th:text="${error}" class="text-sm font-medium"></p>
-      </div>
+      <div th:replace="~{fragmentos :: avisos}"></div>
 
-      <!-- Tabla -->
       <div
+        class="hoja hoja-tabla"
         th:if="${clientes != null and !clientes.empty}"
-        class="bg-white rounded-2xl shadow-xl overflow-hidden"
       >
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <!-- Encabezado -->
-            <thead class="bg-slate-50 border-b border-slate-200">
+        <div class="tabla-desliza">
+          <table class="tabla">
+            <thead>
               <tr>
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  ID
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Nombre
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Apellido
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Email
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Fecha creación
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 text-center"
-                >
-                  Editar
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 text-center"
-                >
-                  Eliminar
-                </th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Registro</th>
+                <th><span class="visualmente-oculto">Acciones</span></th>
               </tr>
             </thead>
 
-            <!-- Clientes -->
-            <tbody class="divide-y divide-slate-100">
-              <tr
-                th:each="cliente : ${clientes}"
-                class="transition hover:bg-slate-50"
-              >
-                <!-- ID -->
+            <tbody>
+              <tr th:each="cliente : ${clientes}">
                 <td
-                  th:text="${cliente.id}"
-                  class="px-6 py-4 text-sm font-medium text-slate-700"
+                  class="fuerte"
+                  th:text="${cliente.nombre} + ' ' + ${cliente.apellido}"
                 ></td>
-
-                <!-- Nombre -->
+                <td th:text="${cliente.email}"></td>
                 <td
-                  th:text="${cliente.nombre}"
-                  class="px-6 py-4 text-sm text-slate-700"
+                  class="tenue"
+                  th:text="${#dates.format(cliente.crDate, 'dd/MM/yyyy')}"
                 ></td>
-
-                <!-- Apellido -->
-                <td
-                  th:text="${cliente.apellido}"
-                  class="px-6 py-4 text-sm text-slate-700"
-                ></td>
-
-                <!-- Email -->
-                <td
-                  th:text="${cliente.email}"
-                  class="px-6 py-4 text-sm text-slate-600"
-                ></td>
-
-                <!-- Fecha -->
-                <td
-                  th:text="${cliente.crDate}"
-                  class="px-6 py-4 text-sm text-slate-500"
-                ></td>
-
-                <!-- Editar -->
-                <td class="px-6 py-4 text-center">
-                  <a
-                    th:href="@{/cliente/editar/{id}(id=${cliente.id})}"
-                    class="inline-flex items-center rounded-lg bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white"
-                  >
-                    Editar
-                  </a>
-                </td>
-
-                <!-- Eliminar -->
-                <td class="px-6 py-4 text-center">
-                  <a
-                    th:href="@{/cliente/eliminar/{id}(id=${cliente.id})}"
-                    onclick="
-                      return confirm('¿Está seguro de eliminar este cliente?');
-                    "
-                    class="inline-flex items-center rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-600 hover:text-white"
-                  >
-                    Eliminar
-                  </a>
+                <td>
+                  <div class="acciones">
+                    <a
+                      class="tecla tecla-sm"
+                      th:href="@{/cliente/editar/{id}(id=${cliente.id})}"
+                      >Editar</a
+                    >
+                    <a
+                      class="tecla tecla-sm tecla-peligro"
+                      th:href="@{/cliente/eliminar/{id}(id=${cliente.id})}"
+                      onclick="return confirm('¿Eliminar este cliente y su cuenta de acceso? Esta acción no se puede deshacer.');"
+                      >Eliminar</a
+                    >
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -168,30 +62,14 @@
         </div>
       </div>
 
-      <!-- Cuando no hay clientes -->
-      <div
-        th:if="${clientes == null or clientes.empty}"
-        class="bg-white rounded-2xl shadow-xl p-10 text-center"
-      >
-        <div
-          class="mx-auto mb-4 w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center"
-        >
-          <span class="text-xl text-slate-400"> 👤 </span>
-        </div>
-
-        <h2 class="text-lg font-bold text-slate-700">
-          No hay clientes registrados
-        </h2>
-
-        <p class="text-sm text-slate-500 mt-2">
-          Actualmente no existen clientes para mostrar.
+      <div class="hoja vacio" th:if="${clientes == null or clientes.empty}">
+        <h2>Aún no hay clientes</h2>
+        <p>
+          Los clientes aparecen aquí cuando completan sus datos personales.
         </p>
       </div>
+    </main>
 
-      <!-- Pie -->
-      <div class="text-center mt-8">
-        <p class="text-xs text-slate-400">Gestión de clientes</p>
-      </div>
-    </div>
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>

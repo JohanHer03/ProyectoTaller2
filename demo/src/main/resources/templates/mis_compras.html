@@ -1,191 +1,78 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: head(${titulo} ?: 'Mis compras')}"></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header th:replace="~{fragmentos :: barra('mis-compras')}"></header>
 
-    <title th:text="${titulo}">Mis compras</title>
+    <main class="pagina">
+      <div class="cabecera">
+        <div>
+          <h1 th:text="${titulo} ?: 'Mis compras'">Mis compras</h1>
+          <p>Tu historial de compras. Abre una para ver el detalle o la factura.</p>
+        </div>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100">
-    <div class="max-w-6xl mx-auto px-6 py-10">
-      <!-- ========================= -->
-      <!-- ENCABEZADO -->
-      <!-- ========================= -->
-
-      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
-        <div
-          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-        >
-          <div>
-            <p class="text-sm font-medium text-blue-600 mb-1">Historial</p>
-
-            <h1 th:text="${titulo}" class="text-3xl font-bold text-slate-800">
-              Mis compras
-            </h1>
-
-            <p class="text-slate-500 mt-2">
-              Consulta las compras que has realizado.
-            </p>
-          </div>
-
-          <a
-            th:href="@{/cliente/}"
-            class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
-          >
-            ← Volver
+        <div class="acciones">
+          <a class="tecla tecla-enter" th:href="@{/encabezado/comprar}">
+            Comprar productos
           </a>
         </div>
       </div>
 
-      <!-- ========================= -->
-      <!-- SIN COMPRAS -->
-      <!-- ========================= -->
-
-      <div
-        th:if="${#lists.isEmpty(encabezados)}"
-        class="bg-white rounded-2xl shadow-xl p-10 text-center"
-      >
-        <div
-          class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100"
-        >
-          <span class="text-2xl"> 🛒 </span>
-        </div>
-
-        <h2 class="text-xl font-semibold text-slate-800">
-          No tienes compras registradas
-        </h2>
-
-        <p class="mt-2 text-slate-500">
-          Cuando realices una compra, aparecerá aquí.
-        </p>
-
-        <br />
-
-        <a
-          th:href="@{/encabezado/comprar}"
-          class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-        >
-          Comprar productos
+      <div class="hoja vacio" th:if="${#lists.isEmpty(encabezados)}">
+        <h2>Todavía no tienes compras</h2>
+        <p>Cuando confirmes tu primera compra, aparecerá en esta lista.</p>
+        <a class="tecla tecla-enter" th:href="@{/encabezado/comprar}">
+          Ir a la tienda
         </a>
       </div>
 
-      <!-- ========================= -->
-      <!-- LISTADO DE COMPRAS -->
-      <!-- ========================= -->
-
       <div
+        class="hoja hoja-tabla"
         th:if="${!#lists.isEmpty(encabezados)}"
-        class="bg-white rounded-2xl shadow-xl overflow-hidden"
       >
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <!-- ENCABEZADO -->
-
-            <thead class="bg-slate-50 border-b border-slate-200">
+        <div class="tabla-desliza">
+          <table class="tabla">
+            <thead>
               <tr>
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Compra
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Fecha
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Total
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Detalles
-                </th>
+                <th>Compra</th>
+                <th>Fecha</th>
+                <th class="num">Total</th>
+                <th><span class="visualmente-oculto">Acciones</span></th>
               </tr>
             </thead>
 
-            <!-- COMPRAS -->
-
-            <tbody class="divide-y divide-slate-100">
-              <tr
-                th:each="encabezado : ${encabezados}"
-                class="transition hover:bg-slate-50"
-              >
-                <!-- ID COMPRA -->
-
+            <tbody>
+              <tr th:each="encabezado : ${encabezados}">
+                <td class="fuerte" th:text="'N.º ' + ${encabezado.id}"></td>
                 <td
-                  th:text="${encabezado.id}"
-                  class="px-6 py-5 text-sm font-semibold text-slate-800"
+                  th:text="${#dates.format(encabezado.fecha, 'dd/MM/yyyy')}"
                 ></td>
-
-                <!-- FECHA -->
-
                 <td
-                  th:text="${#dates.format(encabezado.fecha, 'dd/MM/yy')}"
-                  class="px-6 py-5 text-sm text-slate-600"
+                  class="num fuerte"
+                  th:text="'$' + ${#numbers.formatDecimal(encabezado.total, 0, 'POINT', 0, 'COMMA')}"
                 ></td>
-
-                <!-- TOTAL -->
-
-                <td class="px-6 py-5 text-sm font-semibold text-slate-800">
-                  $
-                  <span
-                    th:text="${#numbers.formatDecimal(
-                                        encabezado.total,
-                                        0,
-                                        'POINT',
-                                        0,
-                                        'COMMA'
-                                    )}"
-                  >
-                  </span>
-                </td>
-
-                <!-- DETALLES -->
-
-                <td class="px-6 py-5">
-                  <a
-                    th:href="@{/encabezado/detalles/{id}(id=${encabezado.id})}"
-                    class="inline-flex items-center rounded-lg bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-100"
-                  >
-                    Ver detalles →
-                  </a>
+                <td>
+                  <div class="acciones">
+                    <a
+                      class="tecla tecla-sm"
+                      th:href="@{/encabezado/detalles/{id}(id=${encabezado.id})}"
+                      >Ver detalle</a
+                    >
+                    <a
+                      class="tecla tecla-sm"
+                      th:href="@{/encabezado/factura/{id}/pdf(id=${encabezado.id})}"
+                      >Factura PDF</a
+                    >
+                  </div>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+    </main>
 
-      <!-- ========================= -->
-      <!-- ACCIONES -->
-      <!-- ========================= -->
-
-      <div class="mt-8 flex flex-col sm:flex-row gap-3">
-        <a
-          th:href="@{/encabezado/comprar}"
-          class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-        >
-          Comprar productos
-        </a>
-
-        <a
-          th:href="@{/cliente/}"
-          class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
-        >
-          Volver al menú
-        </a>
-      </div>
-    </div>
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>

@@ -1,289 +1,130 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: head(${titulo} ?: 'Usuarios')}"></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header th:replace="~{fragmentos :: barra('usuarios')}"></header>
 
-    <title th:text="${titulo}">Usuarios</title>
+    <main class="pagina">
+      <div class="cabecera">
+        <div>
+          <h1>Usuarios</h1>
+          <p>Activa las cuentas pendientes y decide el rol de cada persona.</p>
+        </div>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100">
-    <div class="max-w-7xl mx-auto px-6 py-10">
-      <!-- ========================= -->
-      <!-- ENCABEZADO -->
-      <!-- ========================= -->
-
-      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
-        <div
-          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-        >
-          <div>
-            <p class="text-sm font-medium text-blue-600 mb-1">
-              Panel de administrador
-            </p>
-
-            <h1
-              th:text="${titulo}"
-              class="text-3xl font-bold text-slate-800"
-            ></h1>
-
-            <p class="text-slate-500 mt-2">
-              Gestiona los usuarios, sus estados y roles.
-            </p>
-          </div>
-
-          <a
-            th:href="@{/}"
-            class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
-          >
-            ← Inicio
+        <div class="acciones">
+          <a class="tecla tecla-enter" th:href="@{/admin/crear-cliente}">
+            Crear usuario
           </a>
         </div>
       </div>
 
-      <!-- ========================= -->
-      <!-- TABLA -->
-      <!-- ========================= -->
-
-      <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <!-- ENCABEZADO -->
-
-            <thead class="bg-slate-50 border-b border-slate-200">
+      <div class="hoja hoja-tabla">
+        <div class="tabla-desliza">
+          <table class="tabla">
+            <thead>
               <tr>
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  ID
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Correo
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Estado
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Rol
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
-                >
-                  Cliente
-                </th>
-
-                <th
-                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 text-center"
-                >
-                  Acción
-                </th>
+                <th>Correo</th>
+                <th>Estado</th>
+                <th>Datos personales</th>
+                <th>Rol</th>
               </tr>
             </thead>
 
-            <!-- ========================= -->
-            <!-- USUARIOS -->
-            <!-- ========================= -->
+            <tbody>
+              <tr th:each="usuario : ${usuarios}">
+                <td class="fuerte" th:text="${usuario.email}"></td>
 
-            <tbody class="divide-y divide-slate-100">
-              <tr
-                th:each="usuario : ${usuarios}"
-                class="transition hover:bg-slate-50"
-              >
-                <!-- ID -->
-
-                <td
-                  th:text="${usuario.id}"
-                  class="px-6 py-5 text-sm font-semibold text-slate-700"
-                ></td>
-
-                <!-- CORREO -->
-
-                <td
-                  th:text="${usuario.email}"
-                  class="px-6 py-5 text-sm text-slate-700"
-                ></td>
-
-                <!-- ESTADO -->
-
-                <td class="px-6 py-5">
+                <td>
                   <span
+                    class="estado estado-ok"
                     th:if="${usuario.estado == 'ACTIVO'}"
-                    class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                    >Activo</span
                   >
-                    Activo
-                  </span>
-
                   <span
+                    class="estado estado-pendiente"
                     th:if="${usuario.estado == 'PENDIENTE'}"
-                    class="inline-flex items-center rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
+                    >Pendiente</span
                   >
-                    Pendiente
-                  </span>
                 </td>
 
-                <!-- ========================= -->
-                <!-- ROL -->
-                <!-- ========================= -->
-
-                <td class="px-6 py-5">
-                  <!-- ADMIN -->
-                  <div th:if="${admin}">
-                    <!-- Otro usuario -->
-                    <div th:if="${!usuario.esSuperAdmin()}">
-                      <form
-                        th:action="@{/admin/modificar-rol}"
-                        method="post"
-                        class="flex items-center gap-2"
-                      >
-                        <input
-                          type="hidden"
-                          name="id"
-                          th:value="${usuario.id}"
-                        />
-
-                        <select
-                          name="rol"
-                          class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                        >
-                          <option
-                            value="CLIENTE"
-                            th:selected="${usuario.rol == 'CLIENTE'}"
-                          >
-                            CLIENTE
-                          </option>
-
-                          <option
-                            value="ADMIN"
-                            th:selected="${usuario.rol == 'ADMIN'}"
-                          >
-                            ADMIN
-                          </option>
-                        </select>
-
-                        <button
-                          type="submit"
-                          class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white"
-                        >
-                          Modificar
-                        </button>
-                      </form>
-                    </div>
-
-                    <!-- Superadmin: rol fijo -->
-
-                    <div th:if="${usuario.esSuperAdmin()}">
-                      <span
-                        class="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-700"
-                      >
-                        Superadministrador
-                      </span>
-
-                      <p class="text-xs text-slate-400 mt-1">
-                        Este rol no se puede cambiar.
-                      </p>
-                    </div>
-                  </div>
-
-                  <!-- CLIENTE -->
-
-                  <div th:unless="${admin}">
-                    <span
-                      th:text="${usuario.rol}"
-                      class="text-sm font-medium text-slate-700"
-                    >
-                    </span>
-                  </div>
-                </td>
-
-                <!-- ========================= -->
-                <!-- CLIENTE -->
-                <!-- ========================= -->
-
-                <td class="px-6 py-5">
+                <td>
                   <span
+                    class="estado estado-ok"
                     th:if="${usuario.cliente != null}"
-                    class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                    >Completos</span
                   >
-                    Registrado
-                  </span>
-
                   <span
+                    class="estado estado-neutro"
                     th:if="${usuario.cliente == null}"
-                    class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500"
+                    >Sin completar</span
                   >
-                    Sin datos personales
-                  </span>
                 </td>
 
-                <!-- ========================= -->
-                <!-- ACCIÓN -->
-                <!-- ========================= -->
-
-                <td class="px-6 py-5 text-center">
-                  <!-- PENDIENTE -->
-
-                  <div th:if="${usuario.estado == 'PENDIENTE'}">
-                    <form
-                      th:action="@{/admin/activar}"
-                      method="post"
-                      class="flex flex-col items-center gap-2"
-                    >
-                      <input type="hidden" name="id" th:value="${usuario.id}" />
-
-                      <select
-                        name="rol"
-                        class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700 outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200"
-                      >
-                        <option value="CLIENTE">CLIENTE</option>
-
-                        <option value="ADMIN">ADMIN</option>
-                      </select>
-
-                      <button
-                        type="submit"
-                        class="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-700"
-                      >
-                        Activar
-                      </button>
-                    </form>
-                  </div>
-
-                  <!-- ACTIVO -->
-
-                  <span
-                    th:if="${usuario.estado == 'ACTIVO'}"
-                    class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                <td>
+                  <!-- Pendiente: activar con un rol -->
+                  <form
+                    th:if="${usuario.estado == 'PENDIENTE'}"
+                    th:action="@{/admin/activar}"
+                    method="post"
+                    class="form-en-linea"
                   >
-                    ✓ Activo
-                  </span>
+                    <input type="hidden" name="id" th:value="${usuario.id}" />
+                    <select
+                      name="rol"
+                      th:aria-label="'Rol para ' + ${usuario.email}"
+                    >
+                      <option value="CLIENTE">Cliente</option>
+                      <option value="ADMIN">Administrador</option>
+                    </select>
+                    <button type="submit" class="tecla tecla-sm tecla-enter">
+                      Activar
+                    </button>
+                  </form>
+
+                  <!-- Superadmin: rol fijo -->
+                  <span
+                    class="estado estado-rol"
+                    th:if="${usuario.esSuperAdmin()}"
+                    title="Este rol no se puede cambiar"
+                    >Superadministrador</span
+                  >
+
+                  <!-- Activo: cambiar rol -->
+                  <form
+                    th:if="${usuario.estado == 'ACTIVO' and !usuario.esSuperAdmin()}"
+                    th:action="@{/admin/modificar-rol}"
+                    method="post"
+                    class="form-en-linea"
+                  >
+                    <input type="hidden" name="id" th:value="${usuario.id}" />
+                    <select
+                      name="rol"
+                      th:aria-label="'Rol de ' + ${usuario.email}"
+                    >
+                      <option
+                        value="CLIENTE"
+                        th:selected="${usuario.rol == 'CLIENTE'}"
+                      >
+                        Cliente
+                      </option>
+                      <option
+                        value="ADMIN"
+                        th:selected="${usuario.rol == 'ADMIN'}"
+                      >
+                        Administrador
+                      </option>
+                    </select>
+                    <button type="submit" class="tecla tecla-sm">Guardar</button>
+                  </form>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+    </main>
 
-      <!-- ========================= -->
-      <!-- PIE -->
-      <!-- ========================= -->
-
-      <div class="text-center mt-8">
-        <p class="text-xs text-slate-400">Gestión de usuarios y permisos</p>
-      </div>
-    </div>
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>

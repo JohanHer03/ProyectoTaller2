@@ -1,246 +1,139 @@
 <!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: head(${titulo} ?: 'Datos personales')}"></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header
+      th:replace="~{fragmentos :: barra(${admin} ? 'clientes' : '')}"
+    ></header>
 
-    <title th:text="${titulo}">Cliente</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100">
-    <div class="max-w-3xl mx-auto px-6 py-10">
-      <!-- ENCABEZADO -->
-      <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
-        <div
-          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-        >
-          <div>
-            <p class="text-sm font-medium text-blue-600 mb-1">
-              Plataforma de compras
-            </p>
-
-            <h1 th:text="${titulo}" class="text-3xl font-bold text-slate-800">
-              Datos del cliente
-            </h1>
-          </div>
-
-          <!-- VOLVER -->
-          <div>
-            <a
-              th:if="${admin}"
-              th:href="@{/cliente/listar}"
-              class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
-            >
-              ← Volver a clientes
-            </a>
-
-            <a
-              th:unless="${admin}"
-              th:href="@{/cliente/perfil}"
-              class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
-            >
-              ← Volver a mi perfil
-            </a>
-          </div>
+    <main class="pagina pagina-angosta">
+      <div class="cabecera">
+        <div>
+          <h1 th:text="${titulo} ?: 'Datos personales'">Datos personales</h1>
+          <p th:if="${admin}">Actualiza el nombre y el apellido del cliente.</p>
+          <p th:unless="${admin}">
+            Tu nombre aparece en tus compras y facturas.
+          </p>
         </div>
       </div>
 
-      <!-- DATOS DEL CLIENTE -->
-      <div class="bg-white rounded-2xl shadow-xl p-8">
-        <div class="mb-6">
-          <h2 class="text-xl font-bold text-slate-800">Información personal</h2>
+      <div th:replace="~{fragmentos :: avisos}"></div>
 
-          <p class="text-sm text-slate-500 mt-1">
-            Completa o modifica los datos del cliente.
-          </p>
-        </div>
-
+      <div class="hoja">
         <form
           th:action="${adminPerfil} ? @{/admin/perfil/guardar} : @{/cliente/guardar}"
           method="post"
           th:object="${cliente}"
-          class="space-y-5"
+          class="formulario"
         >
-          <!-- ID -->
           <input type="hidden" th:field="*{id}" />
 
-          <!-- NOMBRE -->
-          <div>
-            <label
-              for="nombre"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Nombre
-            </label>
+          <div class="fila-campos">
+            <div class="campo">
+              <label for="nombre">Nombre</label>
+              <input
+                type="text"
+                id="nombre"
+                th:field="*{nombre}"
+                autocomplete="given-name"
+              />
+              <span
+                class="campo-error"
+                th:if="${#fields.hasErrors('nombre')}"
+                th:errors="*{nombre}"
+              ></span>
+            </div>
 
-            <input
-              type="text"
-              id="nombre"
-              th:field="*{nombre}"
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-            />
-
-            <span
-              th:if="${#fields.hasErrors('nombre')}"
-              th:errors="*{nombre}"
-              class="block mt-2 text-sm text-red-600"
-            >
-            </span>
+            <div class="campo">
+              <label for="apellido">Apellido</label>
+              <input
+                type="text"
+                id="apellido"
+                th:field="*{apellido}"
+                autocomplete="family-name"
+              />
+              <span
+                class="campo-error"
+                th:if="${#fields.hasErrors('apellido')}"
+                th:errors="*{apellido}"
+              ></span>
+            </div>
           </div>
 
-          <!-- APELLIDO -->
-          <div>
-            <label
-              for="apellido"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Apellido
-            </label>
-
-            <input
-              type="text"
-              id="apellido"
-              th:field="*{apellido}"
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-            />
-
-            <span
-              th:if="${#fields.hasErrors('apellido')}"
-              th:errors="*{apellido}"
-              class="block mt-2 text-sm text-red-600"
-            >
-            </span>
-          </div>
-
-          <!-- EMAIL -->
-          <div>
-            <label
-              for="email"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Correo electrónico
-            </label>
-
-            <input
-              type="email"
-              id="email"
-              th:field="*{email}"
-              readonly
-              class="w-full rounded-lg border border-slate-200 bg-slate-100 px-4 py-3 text-slate-500 cursor-not-allowed"
-            />
-
-            <p class="text-xs text-slate-400 mt-2">
-              El correo está asociado a la cuenta de acceso y no puede
-              modificarse desde aquí.
+          <div class="campo">
+            <label for="email">Correo</label>
+            <input type="email" id="email" th:field="*{email}" readonly />
+            <p class="campo-ayuda">
+              Es el correo de la cuenta de acceso; no se cambia desde aquí.
             </p>
-
             <span
+              class="campo-error"
               th:if="${#fields.hasErrors('email')}"
               th:errors="*{email}"
-              class="block mt-2 text-sm text-red-600"
-            >
-            </span>
+            ></span>
           </div>
 
-          <!-- GUARDAR -->
-          <div class="pt-2">
-            <button
-              type="submit"
-              class="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 active:scale-[0.99]"
-            >
-              Guardar cambios
+          <div class="acciones">
+            <button type="submit" class="tecla tecla-enter">
+              Guardar cambios <span class="leyenda" aria-hidden="true">↵</span>
             </button>
+            <a class="tecla" th:if="${admin}" th:href="@{/cliente/listar}"
+              >Volver a clientes</a
+            >
+            <a
+              class="tecla"
+              th:unless="${admin}"
+              th:href="${adminPerfil} ? @{/admin/perfil} : @{/cliente/perfil}"
+              >Volver a mi perfil</a
+            >
           </div>
         </form>
       </div>
 
-      <!-- MODIFICAR ROL: SOLO SUPERADMIN -->
-      <div th:if="${superadmin}" class="bg-white rounded-2xl shadow-xl p-8 mt-6">
-        <div class="mb-6">
-          <h2 class="text-xl font-bold text-slate-800">
-            Administración de usuario
-          </h2>
+      <!-- Rol de la cuenta: solo superadmin -->
+      <div class="hoja" th:if="${superadmin}">
+        <h2 class="hoja-titulo">Rol de la cuenta</h2>
+        <p class="hoja-nota">Define qué puede hacer esta persona en la tienda.</p>
 
-          <p class="text-sm text-slate-500 mt-1">
-            Modifica el rol asociado a esta cuenta.
-          </p>
-        </div>
-
-        <!-- Cuenta del superadmin: su rol es fijo -->
         <div
+          class="aviso aviso-info"
           th:if="${usuario != null and usuario.esSuperAdmin()}"
-          class="rounded-lg border border-purple-200 bg-purple-50 px-4 py-3 text-purple-700"
         >
-          <p class="text-sm font-medium">
-            Esta es la cuenta de superadministrador. Su rol no se puede cambiar.
-          </p>
+          Esta es la cuenta de superadministrador. Su rol no se puede cambiar.
         </div>
 
-        <!-- Usuario encontrado -->
-        <div th:if="${usuario != null and !usuario.esSuperAdmin()}">
-          <form
-            th:action="@{/admin/modificar-rol}"
-            method="post"
-            class="space-y-5"
-          >
-            <input type="hidden" name="id" th:value="${usuario.id}" />
-
-            <!-- ROL -->
-            <div>
-              <label
-                for="rol"
-                class="block text-sm font-medium text-slate-700 mb-2"
-              >
-                Rol
-              </label>
-
-              <select
-                id="rol"
-                name="rol"
-                class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-              >
-                <option
-                  value="CLIENTE"
-                  th:selected="${usuario.rol == 'CLIENTE'}"
-                >
-                  CLIENTE
-                </option>
-
-                <option value="ADMIN" th:selected="${usuario.rol == 'ADMIN'}">
-                  ADMIN
-                </option>
-              </select>
-            </div>
-
-            <!-- BOTÓN -->
-            <button
-              type="submit"
-              class="w-full rounded-lg border border-blue-600 bg-white px-4 py-3 font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
-            >
-              Modificar rol
-            </button>
-          </form>
-        </div>
-
-        <!-- Usuario no encontrado -->
-        <div
-          th:if="${usuario == null}"
-          class="rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3 text-yellow-700"
+        <form
+          th:if="${usuario != null and !usuario.esSuperAdmin()}"
+          th:action="@{/admin/modificar-rol}"
+          method="post"
+          class="formulario"
         >
-          <p class="text-sm font-medium">
-            No se encontró un usuario asociado a este cliente.
-          </p>
+          <input type="hidden" name="id" th:value="${usuario.id}" />
+
+          <div class="campo">
+            <label for="rol">Rol</label>
+            <select id="rol" name="rol">
+              <option value="CLIENTE" th:selected="${usuario.rol == 'CLIENTE'}">
+                Cliente
+              </option>
+              <option value="ADMIN" th:selected="${usuario.rol == 'ADMIN'}">
+                Administrador
+              </option>
+            </select>
+          </div>
+
+          <div class="acciones">
+            <button type="submit" class="tecla tecla-grafito">Cambiar rol</button>
+          </div>
+        </form>
+
+        <div class="aviso aviso-error" th:if="${usuario == null}">
+          Este cliente no tiene una cuenta de acceso asociada.
         </div>
       </div>
+    </main>
 
-      <!-- PIE -->
-      <div class="text-center mt-8">
-        <p class="text-xs text-slate-400">Gestión de información del cliente</p>
-      </div>
-    </div>
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>

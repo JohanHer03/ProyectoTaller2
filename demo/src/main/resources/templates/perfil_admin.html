@@ -1,87 +1,49 @@
 <!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: head('Mi perfil')}"></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header th:replace="~{fragmentos :: barra('')}"></header>
 
-    <title>Mi perfil</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100">
-    <div class="max-w-3xl mx-auto px-6 py-10">
-      <div class="bg-white rounded-2xl shadow-xl p-8">
-        <div class="mb-8">
-          <p class="text-sm font-medium text-blue-600">
-            Panel de administrador
-          </p>
-
-          <h1 class="text-3xl font-bold text-slate-800">Mi perfil</h1>
-        </div>
-
-        <div class="space-y-5">
-          <div>
-            <p class="text-sm text-slate-500">Nombre</p>
-
-            <p
-              th:text="${cliente.nombre}"
-              class="text-lg font-medium text-slate-800"
-            ></p>
-          </div>
-
-          <div>
-            <p class="text-sm text-slate-500">Apellido</p>
-
-            <p
-              th:text="${cliente.apellido}"
-              class="text-lg font-medium text-slate-800"
-            ></p>
-          </div>
-
-          <div>
-            <p class="text-sm text-slate-500">Email</p>
-
-            <p
-              th:text="${cliente.email}"
-              class="text-lg font-medium text-slate-800"
-            ></p>
-          </div>
-
-          <div>
-            <p class="text-sm text-slate-500">Fecha de creación</p>
-
-            <p
-              th:text="${#dates.format(cliente.crDate, 'dd/MM/yy')}"
-              class="text-lg font-medium text-slate-800"
-            ></p>
-          </div>
-        </div>
-
-        <div class="border-t border-slate-200 mt-8 pt-6 space-y-3">
-          <a
-            th:href="@{/admin/perfil/editar}"
-            class="block w-full text-center rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700"
-          >
-            Editar mi perfil
-          </a>
-
-          <a
-            th:href="@{/admin/cambiar-password}"
-            class="block w-full text-center rounded-lg bg-slate-700 px-4 py-3 font-semibold text-white hover:bg-slate-800"
-          >
-            Cambiar contraseña
-          </a>
-
-          <a
-            th:href="@{/}"
-            class="block text-center text-sm font-semibold text-slate-500 hover:text-blue-600"
-          >
-            ← Volver al inicio
-          </a>
+    <main class="pagina pagina-angosta">
+      <div class="cabecera">
+        <div>
+          <h1 th:text="${cliente.nombre} + ' ' + ${cliente.apellido}">Mi perfil</h1>
+          <p>Tus datos como administrador de la tienda.</p>
         </div>
       </div>
-    </div>
+
+      <div class="hoja">
+        <dl class="ficha">
+          <div>
+            <dt>Nombre</dt>
+            <dd th:text="${cliente.nombre}"></dd>
+          </div>
+          <div>
+            <dt>Apellido</dt>
+            <dd th:text="${cliente.apellido}"></dd>
+          </div>
+          <div>
+            <dt>Correo</dt>
+            <dd th:text="${cliente.email}"></dd>
+          </div>
+          <div>
+            <dt>Registrado desde</dt>
+            <dd th:text="${#dates.format(cliente.crDate, 'dd/MM/yyyy')}"></dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="acciones acciones-pie">
+        <a class="tecla tecla-enter" th:href="@{/admin/perfil/editar}">
+          Editar mis datos
+        </a>
+        <a class="tecla" th:href="@{/admin/cambiar-password}">
+          Cambiar contraseña
+        </a>
+      </div>
+    </main>
+
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>
