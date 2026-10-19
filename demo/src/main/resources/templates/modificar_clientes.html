@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title th:text="${titulo}">Cliente</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-100">
+    <div class="max-w-3xl mx-auto px-6 py-10">
+      <!-- ENCABEZADO -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
+        <div
+          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+        >
+          <div>
+            <p class="text-sm font-medium text-blue-600 mb-1">
+              Plataforma de compras
+            </p>
+
+            <h1 th:text="${titulo}" class="text-3xl font-bold text-slate-800">
+              Datos del cliente
+            </h1>
+          </div>
+
+          <!-- VOLVER -->
+          <div>
+            <a
+              th:if="${admin}"
+              th:href="@{/cliente/listar}"
+              class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+            >
+              ← Volver a clientes
+            </a>
+
+            <a
+              th:unless="${admin}"
+              th:href="@{/cliente/perfil}"
+              class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+            >
+              ← Volver a mi perfil
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATOS DEL CLIENTE -->
+      <div class="bg-white rounded-2xl shadow-xl p-8">
+        <div class="mb-6">
+          <h2 class="text-xl font-bold text-slate-800">Información personal</h2>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Completa o modifica los datos del cliente.
+          </p>
+        </div>
+
+        <form
+          th:action="${adminPerfil} ? @{/admin/perfil/guardar} : @{/cliente/guardar}"
+          method="post"
+          th:object="${cliente}"
+          class="space-y-5"
+        >
+          <!-- ID -->
+          <input type="hidden" th:field="*{id}" />
+
+          <!-- NOMBRE -->
+          <div>
+            <label
+              for="nombre"
+              class="block text-sm font-medium text-slate-700 mb-2"
+            >
+              Nombre
+            </label>
+
+            <input
+              type="text"
+              id="nombre"
+              th:field="*{nombre}"
+              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            />
+
+            <span
+              th:if="${#fields.hasErrors('nombre')}"
+              th:errors="*{nombre}"
+              class="block mt-2 text-sm text-red-600"
+            >
+            </span>
+          </div>
+
+          <!-- APELLIDO -->
+          <div>
+            <label
+              for="apellido"
+              class="block text-sm font-medium text-slate-700 mb-2"
+            >
+              Apellido
+            </label>
+
+            <input
+              type="text"
+              id="apellido"
+              th:field="*{apellido}"
+              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            />
+
+            <span
+              th:if="${#fields.hasErrors('apellido')}"
+              th:errors="*{apellido}"
+              class="block mt-2 text-sm text-red-600"
+            >
+            </span>
+          </div>
+
+          <!-- EMAIL -->
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-slate-700 mb-2"
+            >
+              Correo electrónico
+            </label>
+
+            <input
+              type="email"
+              id="email"
+              th:field="*{email}"
+              readonly
+              class="w-full rounded-lg border border-slate-200 bg-slate-100 px-4 py-3 text-slate-500 cursor-not-allowed"
+            />
+
+            <p class="text-xs text-slate-400 mt-2">
+              El correo está asociado a la cuenta de acceso y no puede
+              modificarse desde aquí.
+            </p>
+
+            <span
+              th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}"
+              class="block mt-2 text-sm text-red-600"
+            >
+            </span>
+          </div>
+
+          <!-- GUARDAR -->
+          <div class="pt-2">
+            <button
+              type="submit"
+              class="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 active:scale-[0.99]"
+            >
+              Guardar cambios
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- MODIFICAR ROL: SOLO ADMIN -->
+      <div th:if="${admin}" class="bg-white rounded-2xl shadow-xl p-8 mt-6">
+        <div class="mb-6">
+          <h2 class="text-xl font-bold text-slate-800">
+            Administración de usuario
+          </h2>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Modifica el rol asociado a esta cuenta.
+          </p>
+        </div>
+
+        <!-- Usuario encontrado -->
+        <div th:if="${usuario != null}">
+          <form
+            th:action="@{/admin/modificar-rol}"
+            method="post"
+            class="space-y-5"
+          >
+            <input type="hidden" name="id" th:value="${usuario.id}" />
+
+            <!-- ROL -->
+            <div>
+              <label
+                for="rol"
+                class="block text-sm font-medium text-slate-700 mb-2"
+              >
+                Rol
+              </label>
+
+              <select
+                id="rol"
+                name="rol"
+                class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              >
+                <option
+                  value="CLIENTE"
+                  th:selected="${usuario.rol == 'CLIENTE'}"
+                >
+                  CLIENTE
+                </option>
+
+                <option value="ADMIN" th:selected="${usuario.rol == 'ADMIN'}">
+                  ADMIN
+                </option>
+              </select>
+            </div>
+
+            <!-- BOTÓN -->
+            <button
+              type="submit"
+              class="w-full rounded-lg border border-blue-600 bg-white px-4 py-3 font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-300"
+            >
+              Modificar rol
+            </button>
+          </form>
+        </div>
+
+        <!-- Usuario no encontrado -->
+        <div
+          th:if="${usuario == null}"
+          class="rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3 text-yellow-700"
+        >
+          <p class="text-sm font-medium">
+            No se encontró un usuario asociado a este cliente.
+          </p>
+        </div>
+      </div>
+
+      <!-- PIE -->
+      <div class="text-center mt-8">
+        <p class="text-xs text-slate-400">Gestión de información del cliente</p>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Compras</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-100">
+    <div class="max-w-7xl mx-auto px-6 py-10">
+      <!-- ========================= -->
+      <!-- ENCABEZADO -->
+      <!-- ========================= -->
+
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <div
+          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+        >
+          <div>
+            <p class="text-sm font-medium text-blue-600 mb-1">
+              Gestión de compras
+            </p>
+
+            <h1 class="text-3xl font-bold text-slate-800">
+              Listado de compras
+            </h1>
+
+            <p class="text-slate-500 mt-2">
+              Consulta las compras realizadas y sus respectivos detalles.
+            </p>
+          </div>
+
+          <a
+            th:href="@{/}"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+          >
+            ← Inicio
+          </a>
+        </div>
+      </div>
+
+      <!-- ========================= -->
+      <!-- TABLA DE COMPRAS -->
+      <!-- ========================= -->
+
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <!-- ENCABEZADO -->
+
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  ID
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Cliente
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Fecha
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Total
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Detalles
+                </th>
+              </tr>
+            </thead>
+
+            <!-- ========================= -->
+            <!-- COMPRAS -->
+            <!-- ========================= -->
+
+            <tbody class="divide-y divide-slate-100">
+              <tr
+                th:each="encabezado : ${encabezados}"
+                class="transition hover:bg-slate-50"
+              >
+                <!-- ID -->
+
+                <td
+                  th:text="${encabezado.id}"
+                  class="px-6 py-5 text-sm font-semibold text-slate-700"
+                ></td>
+
+                <!-- CLIENTE -->
+
+                <td
+                  th:text="${encabezado.cliente.nombre}"
+                  class="px-6 py-5 text-sm font-medium text-slate-800"
+                ></td>
+
+                <!-- FECHA -->
+
+                <td
+                  th:text="${#dates.format(encabezado.fecha, 'dd/MM/yy')}"
+                  class="px-6 py-5 text-sm text-slate-600"
+                ></td>
+
+                <!-- TOTAL -->
+
+                <td class="px-6 py-5 text-sm font-semibold text-slate-800">
+                  <span
+                    th:text="${#numbers.formatDecimal(encabezado.total, 0, 'POINT', 0, 'COMMA')}"
+                  >
+                  </span>
+                </td>
+
+                <!-- DETALLES -->
+
+                <td class="px-6 py-5">
+                  <a
+                    th:href="@{/encabezado/detalles/{id}(id=${encabezado.id})}"
+                    class="inline-flex items-center rounded-lg bg-blue-50 px-4 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white"
+                  >
+                    Ver detalles →
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ========================= -->
+      <!-- PIE -->
+      <!-- ========================= -->
+
+      <div class="text-center mt-8">
+        <p class="text-xs text-slate-400">Gestión de compras</p>
+      </div>
+    </div>
+  </body>
+</html>

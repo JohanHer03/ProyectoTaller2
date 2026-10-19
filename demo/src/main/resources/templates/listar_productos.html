@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title th:text="${titulo}">Productos</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-100">
+    <div class="max-w-7xl mx-auto px-6 py-10">
+      <!-- ========================= -->
+      <!-- ENCABEZADO -->
+      <!-- ========================= -->
+
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <div
+          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+        >
+          <div>
+            <p class="text-sm font-medium text-blue-600 mb-1">
+              Gestión de productos
+            </p>
+
+            <h1
+              th:text="${titulo}"
+              class="text-3xl font-bold text-slate-800"
+            ></h1>
+
+            <p class="text-slate-500 mt-2">
+              Consulta, modifica o elimina los productos registrados.
+            </p>
+          </div>
+
+          <a
+            th:href="@{/producto/}"
+            class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
+          >
+            ← Inicio
+          </a>
+        </div>
+      </div>
+
+      <!-- ========================= -->
+      <!-- CONTENIDO -->
+      <!-- ========================= -->
+
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- ERROR -->
+
+        <div
+          th:if="${error}"
+          class="mx-6 mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700"
+        >
+          <p th:text="${error}"></p>
+        </div>
+
+        <!-- ========================= -->
+        <!-- TABLA -->
+        <!-- ========================= -->
+
+        <div
+          th:if="${productos != null and !productos.empty}"
+          class="overflow-x-auto"
+        >
+          <table class="w-full text-left">
+            <!-- ENCABEZADO -->
+
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  ID
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Nombre
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Descripción
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Precio
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Stock
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Editar
+                </th>
+
+                <th
+                  class="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Eliminar
+                </th>
+              </tr>
+            </thead>
+
+            <!-- PRODUCTOS -->
+
+            <tbody class="divide-y divide-slate-100">
+              <tr
+                th:each="producto : ${productos}"
+                class="transition hover:bg-slate-50"
+              >
+                <!-- ID -->
+
+                <td
+                  th:text="${producto.id}"
+                  class="px-6 py-5 text-sm font-semibold text-slate-700"
+                >
+                  ID
+                </td>
+
+                <!-- NOMBRE -->
+
+                <td
+                  th:text="${producto.nombre}"
+                  class="px-6 py-5 text-sm font-medium text-slate-800"
+                >
+                  Nombre
+                </td>
+
+                <!-- DESCRIPCIÓN -->
+
+                <td
+                  th:text="${producto.descripcion}"
+                  class="px-6 py-5 text-sm text-slate-600 max-w-xs"
+                >
+                  Descripcion
+                </td>
+
+                <!-- PRECIO -->
+
+                <td class="px-6 py-5 text-sm font-semibold text-slate-800">
+                  <span th:text="'$'+${producto.precio}"> </span>
+                </td>
+
+                <!-- STOCK -->
+
+                <td class="px-6 py-5">
+                  <span
+                    th:text="${producto.stock}"
+                    th:classappend="${producto.stock == 0}
+                                        ? ' bg-red-100 text-red-700'
+                                        : ' bg-green-100 text-green-700'"
+                    class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
+                  >
+                  </span>
+                </td>
+
+                <!-- EDITAR -->
+
+                <td class="px-6 py-5">
+                  <a
+                    th:href="@{/producto/editar/} + ${producto.id}"
+                    class="inline-flex items-center rounded-lg bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-600 transition hover:bg-blue-600 hover:text-white"
+                  >
+                    Editar
+                  </a>
+                </td>
+
+                <!-- ELIMINAR -->
+
+                <td class="px-6 py-5">
+                  <a
+                    th:href="@{/producto/eliminar/} + ${producto.id}"
+                    onclick="
+                      return confirm('¿Está seguro de eliminar este producto?');
+                    "
+                    class="inline-flex items-center rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-600 hover:text-white"
+                  >
+                    Eliminar
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ========================= -->
+        <!-- SIN PRODUCTOS -->
+        <!-- ========================= -->
+
+        <div
+          th:if="${productos == null or productos.empty}"
+          class="px-6 py-12 text-center"
+        >
+          <div
+            class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400"
+          >
+            📦
+          </div>
+
+          <h2 class="mt-4 text-lg font-semibold text-slate-700">
+            No hay productos registrados
+          </h2>
+
+          <p class="mt-2 text-sm text-slate-500">
+            Actualmente no existen productos para mostrar.
+          </p>
+
+          <a
+            th:href="@{/producto/agregar}"
+            class="inline-flex items-center mt-5 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+          >
+            Crear producto
+          </a>
+        </div>
+      </div>
+
+      <!-- ========================= -->
+      <!-- PIE -->
+      <!-- ========================= -->
+
+      <div class="text-center mt-8">
+        <p class="text-xs text-slate-400">Administración de productos</p>
+      </div>
+    </div>
+  </body>
+</html>

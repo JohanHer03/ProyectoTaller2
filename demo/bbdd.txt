@@ -1,0 +1,6 @@
+http://localhost:8080/h2-console
+URL: jdbc:h2:mem:testdb
+USER: sa
+PASSWORD: 
+
+INSERT INTO login (email, password, estado, rol, cliente_id) VALUES ('sa@gmail.com', '123456', 'ACTIVO', 'ADMIN', NULL);

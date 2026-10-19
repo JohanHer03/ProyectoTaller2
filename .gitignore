@@ -1,0 +1,15 @@
+# Build
+target/
+
+# Editores
+.vscode/
+.idea/
+*.iml
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Claude Code (configuración local personal)
+.claude/settings.local.json

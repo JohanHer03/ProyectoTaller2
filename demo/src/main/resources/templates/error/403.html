@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acceso denegado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-100 flex items-center justify-center p-6">
+    <main
+      class="w-full max-w-lg rounded-2xl bg-white p-8 text-center shadow-xl"
+    >
+      <div
+        class="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-red-100 text-red-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-10 w-10"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="1.8"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v3m0 4h.01M10.3 3.86 1.82 18.14A2 2 0 0 0 3.54 21h16.92a2 2 0 0 0 1.72-2.86L13.7 3.86a2 2 0 0 0-3.4 0Z"
+          />
+        </svg>
+      </div>
+
+      <p
+        class="mb-2 text-sm font-semibold uppercase tracking-wider text-red-600"
+      >
+        Error 403
+      </p>
+
+      <h1 class="text-3xl font-bold text-slate-800">Acceso denegado</h1>
+
+      <p class="mt-4 leading-relaxed text-slate-600">
+        No tienes permiso para consultar esta factura. Solo puedes acceder a tus
+        propias compras.
+      </p>
+
+      <p class="mt-2 text-sm text-slate-500">
+        Si crees que se trata de un error, contacta con el administrador.
+      </p>
+
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a
+          th:href="@{/encabezado/mis-compras}"
+          class="rounded-lg bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
+        >
+          Volver a mis compras
+        </a>
+
+        <a
+          th:href="@{/}"
+          class="rounded-lg border border-slate-300 px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-50"
+        >
+          Ir al inicio
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

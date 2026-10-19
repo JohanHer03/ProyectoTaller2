@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title th:text="${titulo}">Productos</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-100">
+    <div class="max-w-4xl mx-auto px-6 py-10">
+      <!-- ENCABEZADO -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
+        <p class="text-sm font-medium text-blue-600 mb-1">
+          Gestión de productos
+        </p>
+
+        <h1 th:text="${titulo}" class="text-3xl font-bold text-slate-800"></h1>
+
+        <p class="text-slate-500 mt-2">
+          Administra los productos disponibles en la plataforma.
+        </p>
+      </div>
+
+      <!-- OPCIONES -->
+      <div class="bg-white rounded-2xl shadow-xl p-8">
+        <div class="flex flex-col gap-4">
+          <!-- INICIO -->
+
+          <a
+            th:href="@{/}"
+            class="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-5 py-4 text-slate-700 font-semibold transition duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
+          >
+            <span> Inicio </span>
+
+            <span class="text-slate-400"> → </span>
+          </a>
+
+          <!-- CREAR PRODUCTO -->
+
+          <a
+            th:href="@{/producto/agregar}"
+            class="flex items-center justify-between rounded-lg bg-blue-600 px-5 py-4 font-semibold text-white transition duration-200 hover:bg-blue-700 active:scale-[0.99]"
+          >
+            <span> Crear producto </span>
+
+            <span> + </span>
+          </a>
+
+          <!-- LISTAR PRODUCTOS -->
+
+          <a
+            th:href="@{/producto/listar}"
+            class="flex items-center justify-between rounded-lg border border-slate-300 bg-white px-5 py-4 font-semibold text-slate-700 transition duration-200 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600"
+          >
+            <span> Listar productos </span>
+
+            <span class="text-slate-400"> → </span>
+          </a>
+        </div>
+      </div>
+
+      <!-- PIE -->
+
+      <div class="text-center mt-8">
+        <p class="text-xs text-slate-400">Administración de productos</p>
+      </div>
+    </div>
+  </body>
+</html>
