@@ -1,113 +1,49 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: head('Mi perfil')}"></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header th:replace="~{fragmentos :: barra('')}"></header>
 
-    <title>Mi perfil</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100">
-    <div class="max-w-3xl mx-auto px-6 py-10">
-      <!-- ========================= -->
-      <!-- ENCABEZADO -->
-      <!-- ========================= -->
-
-      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
-        <p class="text-sm font-medium text-blue-600 mb-1">Cuenta</p>
-
-        <h1 class="text-3xl font-bold text-slate-800">Mi perfil</h1>
-
-        <p class="text-slate-500 mt-2">Consulta la información de tu cuenta.</p>
-      </div>
-
-      <!-- ========================= -->
-      <!-- INFORMACIÓN -->
-      <!-- ========================= -->
-
-      <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div class="divide-y divide-slate-100">
-          <!-- NOMBRE -->
-
-          <div class="px-8 py-5">
-            <p class="text-sm font-medium text-slate-500">Nombre</p>
-
-            <p
-              th:text="${cliente.nombre}"
-              class="mt-1 text-lg font-semibold text-slate-800"
-            ></p>
-          </div>
-
-          <!-- APELLIDO -->
-
-          <div class="px-8 py-5">
-            <p class="text-sm font-medium text-slate-500">Apellido</p>
-
-            <p
-              th:text="${cliente.apellido}"
-              class="mt-1 text-lg font-semibold text-slate-800"
-            ></p>
-          </div>
-
-          <!-- EMAIL -->
-
-          <div class="px-8 py-5">
-            <p class="text-sm font-medium text-slate-500">Email</p>
-
-            <p
-              th:text="${cliente.email}"
-              class="mt-1 text-lg font-semibold text-slate-800 break-all"
-            ></p>
-          </div>
-
-          <!-- FECHA -->
-
-          <div class="px-8 py-5">
-            <p class="text-sm font-medium text-slate-500">Fecha de creación</p>
-
-            <p
-              th:text="${#dates.format(cliente.crDate, 'dd/MM/yy')}"
-              class="mt-1 text-lg font-semibold text-slate-800"
-            ></p>
-          </div>
-        </div>
-
-        <!-- ========================= -->
-        <!-- ACCIONES -->
-        <!-- ========================= -->
-
-        <div class="border-t border-slate-200 bg-slate-50 px-8 py-6">
-          <div class="flex flex-col sm:flex-row gap-3">
-            <!-- EDITAR -->
-
-            <a
-              th:href="@{/cliente/perfil/editar}"
-              class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-            >
-              Editar mi perfil
-            </a>
-
-            <!-- VOLVER -->
-
-            <a
-              th:href="@{/cliente/}"
-              class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
-            >
-              ← Volver
-            </a>
-          </div>
+    <main class="pagina pagina-angosta">
+      <div class="cabecera">
+        <div>
+          <h1 th:text="${cliente.nombre} + ' ' + ${cliente.apellido}">Mi perfil</h1>
+          <p>Los datos de tu cuenta en la tienda.</p>
         </div>
       </div>
 
-      <!-- PIE -->
-
-      <div class="text-center mt-8">
-        <p class="text-xs text-slate-400">Información de la cuenta</p>
+      <div class="hoja">
+        <dl class="ficha">
+          <div>
+            <dt>Nombre</dt>
+            <dd th:text="${cliente.nombre}"></dd>
+          </div>
+          <div>
+            <dt>Apellido</dt>
+            <dd th:text="${cliente.apellido}"></dd>
+          </div>
+          <div>
+            <dt>Correo</dt>
+            <dd th:text="${cliente.email}"></dd>
+          </div>
+          <div>
+            <dt>Cliente desde</dt>
+            <dd th:text="${#dates.format(cliente.crDate, 'dd/MM/yyyy')}"></dd>
+          </div>
+        </dl>
       </div>
-    </div>
+
+      <div class="acciones acciones-pie">
+        <a class="tecla tecla-enter" th:href="@{/cliente/perfil/editar}">
+          Editar mis datos
+        </a>
+        <a class="tecla" th:href="@{/cliente/cambiar-password}">
+          Cambiar contraseña
+        </a>
+      </div>
+    </main>
+
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>

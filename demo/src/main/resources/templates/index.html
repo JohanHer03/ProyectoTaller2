@@ -1,199 +1,78 @@
 <!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head
+    th:replace="~{fragmentos :: head(${titulo} ?: 'Panel de administración')}"
+  ></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header th:replace="~{fragmentos :: barra('inicio')}"></header>
 
-    <title th:text="${titulo}">Panel de administrador</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100">
-    <!-- Contenedor principal -->
-    <div class="max-w-5xl mx-auto px-6 py-10">
-      <!-- Encabezado -->
-      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
-        <div
-          class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-        >
-          <div>
-            <p class="text-sm font-medium text-blue-600 mb-1">
-              Plataforma de compras
-            </p>
-
-            <h1
-              th:text="${titulo}"
-              class="text-3xl font-bold text-slate-800"
-            ></h1>
-
-            <p class="text-slate-500 mt-2">
-              Administra clientes, usuarios, productos y compras.
-            </p>
-          </div>
-
-          <!-- Cerrar sesión -->
-          <a
-            th:href="@{/login/salir}"
-            class="inline-flex items-center justify-center rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:bg-red-100"
-          >
-            Cerrar sesión
-          </a>
+    <main class="pagina">
+      <div class="cabecera">
+        <div>
+          <h1 th:text="${titulo} ?: 'Panel de administración'">
+            Panel de administración
+          </h1>
+          <p>Gestiona el inventario, los clientes y las compras de la tienda.</p>
         </div>
       </div>
 
-      <!-- Título -->
-      <div class="mb-5">
-        <h2 class="text-xl font-bold text-slate-800">Panel de administrador</h2>
-
-        <p class="text-sm text-slate-500 mt-1">
-          Selecciona una opción para continuar.
-        </p>
-      </div>
-
-      <!-- Opciones -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <!-- MI PERFIL -->
-
-          <a
-            th:href="@{/admin/perfil}"
-            class="group rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-300 hover:bg-blue-50 hover:shadow-md"
-          >
-            <div
-              class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600 mb-3"
-            >
-              👤
-            </div>
-
-            <h3 class="font-semibold text-slate-800 group-hover:text-blue-600">
-              Mi perfil
-            </h3>
-
-            <p class="text-sm text-slate-500 mt-1">
-              Consulta y modifica tus datos personales.
-            </p>
-          </a>
-
-          <!-- CAMBIAR CONTRASEÑA -->
-
-          <a
-            th:href="@{/admin/cambiar-password}"
-            class="group rounded-xl border border-slate-200 bg-white p-5 transition hover:border-blue-300 hover:bg-blue-50 hover:shadow-md"
-          >
-            <div
-              class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 text-blue-600 mb-3"
-            >
-              🔒
-            </div>
-
-            <h3 class="font-semibold text-slate-800 group-hover:text-blue-600">
-              Cambiar contraseña
-            </h3>
-
-            <p class="text-sm text-slate-500 mt-1">
-              Actualiza la contraseña de tu cuenta.
-            </p>
-          </a>
-
-        <!-- Crear cliente: solo superadmin -->
-        <a
-          th:if="${superadmin}"
-          th:href="@{/admin/crear-cliente}"
-          class="group bg-white rounded-xl shadow-md p-6 border border-slate-200 transition duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300"
-        >
-          <div
-            class="w-11 h-11 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 mb-4 group-hover:bg-blue-600 group-hover:text-white transition"
-          >
-            <span class="text-xl">+</span>
-          </div>
-
-          <h3 class="font-bold text-slate-800">Crear cliente</h3>
-
-          <p class="text-sm text-slate-500 mt-2">
-            Crear una cuenta de acceso para un nuevo cliente.
-          </p>
+      <!-- Menú principal con forma de teclado -->
+      <nav class="teclado" aria-label="Menú principal">
+        <a class="tecla-menu doble enter" th:href="@{/producto/}">
+          <h3>Productos</h3>
+          <p>Crea, edita y controla el inventario.</p>
         </a>
 
-        <!-- Gestionar clientes -->
-        <a
-          th:href="@{/cliente/listar}"
-          class="group bg-white rounded-xl shadow-md p-6 border border-slate-200 transition duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300"
-        >
-          <div
-            class="w-11 h-11 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 mb-4 group-hover:bg-blue-600 group-hover:text-white transition"
-          >
-            <span class="text-xl">👤</span>
-          </div>
-
-          <h3 class="font-bold text-slate-800">Gestionar clientes</h3>
-
-          <p class="text-sm text-slate-500 mt-2">
-            Consultar, editar y administrar clientes.
-          </p>
+        <a class="tecla-menu" th:href="@{/cliente/listar}">
+          <h3>Clientes</h3>
+          <p>Consulta y edita los datos de los clientes.</p>
         </a>
 
-        <!-- Gestionar usuarios: solo superadmin -->
+        <a class="tecla-menu" th:href="@{/encabezado/}">
+          <h3>Compras</h3>
+          <p>Revisa todas las compras y sus facturas.</p>
+        </a>
+
+        <!-- Gestión de usuarios: solo superadmin -->
         <a
+          class="tecla-menu"
           th:if="${superadmin}"
           th:href="@{/admin/usuarios}"
-          class="group bg-white rounded-xl shadow-md p-6 border border-slate-200 transition duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300"
         >
-          <div
-            class="w-11 h-11 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 mb-4 group-hover:bg-blue-600 group-hover:text-white transition"
-          >
-            <span class="text-xl">👥</span>
-          </div>
-
-          <h3 class="font-bold text-slate-800">Gestionar usuarios</h3>
-
-          <p class="text-sm text-slate-500 mt-2">
-            Activar usuarios pendientes y administrar sus roles.
-          </p>
+          <h3>Usuarios</h3>
+          <p>Activa cuentas pendientes y asigna roles.</p>
         </a>
 
-        <!-- Gestionar productos -->
         <a
-          th:href="@{/producto/}"
-          class="group bg-white rounded-xl shadow-md p-6 border border-slate-200 transition duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300"
+          class="tecla-menu"
+          th:if="${superadmin}"
+          th:href="@{/admin/crear-cliente}"
         >
-          <div
-            class="w-11 h-11 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 mb-4 group-hover:bg-blue-600 group-hover:text-white transition"
-          >
-            <span class="text-xl">📦</span>
-          </div>
-
-          <h3 class="font-bold text-slate-800">Gestionar productos</h3>
-
-          <p class="text-sm text-slate-500 mt-2">
-            Crear, editar y administrar productos e inventario.
-          </p>
+          <h3>Crear usuario</h3>
+          <p>Da acceso a un nuevo cliente o administrador.</p>
         </a>
 
-        <!-- Ver compras -->
         <a
-          th:href="@{/encabezado/}"
-          class="group bg-white rounded-xl shadow-md p-6 border border-slate-200 transition duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-blue-300"
+          class="tecla-menu oscura"
+          th:classappend="${superadmin} ? '' : ' doble'"
+          th:href="@{/admin/perfil}"
         >
-          <div
-            class="w-11 h-11 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 mb-4 group-hover:bg-blue-600 group-hover:text-white transition"
-          >
-            <span class="text-xl">🛒</span>
-          </div>
-
-          <h3 class="font-bold text-slate-800">Ver compras</h3>
-
-          <p class="text-sm text-slate-500 mt-2">
-            Consultar las compras realizadas por los clientes.
-          </p>
+          <h3>Mi perfil</h3>
+          <p>Tus datos personales.</p>
         </a>
-      </div>
-      
-      <!-- Pie -->
-      <div class="text-center mt-10">
-        <p class="text-xs text-slate-400">Panel de administración</p>
-      </div>
-    </div>
+
+        <a
+          class="tecla-menu oscura"
+          th:classappend="${superadmin} ? '' : ' doble'"
+          th:href="@{/admin/cambiar-password}"
+        >
+          <h3>Contraseña</h3>
+          <p>Cambia la contraseña de tu cuenta.</p>
+        </a>
+      </nav>
+    </main>
+
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>

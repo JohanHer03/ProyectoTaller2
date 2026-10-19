@@ -1,152 +1,80 @@
 <!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragmentos :: head(${titulo} ?: 'Producto')}"></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header th:replace="~{fragmentos :: barra('productos')}"></header>
 
-    <title th:text="${titulo}">Producto</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100">
-    <div class="max-w-3xl mx-auto px-6 py-10">
-      <!-- ENCABEZADO -->
-
-      <div class="bg-white rounded-2xl shadow-xl p-8 mb-6">
-        <p class="text-sm font-medium text-blue-600 mb-1">
-          Gestión de productos
-        </p>
-
-        <h1 th:text="${titulo}" class="text-3xl font-bold text-slate-800"></h1>
-
-        <p class="text-slate-500 mt-2">
-          Registra o modifica la información del producto.
-        </p>
+    <main class="pagina pagina-angosta">
+      <div class="cabecera">
+        <div>
+          <h1 th:text="${producto.id == null} ? 'Nuevo producto' : 'Editar producto'">
+            Producto
+          </h1>
+          <p>Los cambios se reflejan de inmediato en la tienda.</p>
+        </div>
       </div>
 
-      <!-- FORMULARIO -->
+      <div th:replace="~{fragmentos :: avisos}"></div>
 
-      <div class="bg-white rounded-2xl shadow-xl p-8">
-        <!-- VOLVER -->
-
-        <div class="mb-6">
-          <a
-            th:href="@{/producto/}"
-            class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-blue-600"
-          >
-            ← Volver a productos
-          </a>
-        </div>
-
+      <div class="hoja">
         <form
           th:action="@{/producto/guardar}"
           method="post"
           th:object="${producto}"
-          class="space-y-5"
+          class="formulario"
         >
-          <!-- ID -->
-
           <input type="hidden" th:field="*{id}" />
 
-          <!-- NOMBRE -->
-
-          <div>
-            <label
-              for="nombre"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Nombre
-            </label>
-
-            <input
-              type="text"
-              id="nombre"
-              th:field="*{nombre}"
-              required
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-            />
+          <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" th:field="*{nombre}" required />
           </div>
 
-          <!-- DESCRIPCIÓN -->
-
-          <div>
-            <label
-              for="descripcion"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Descripción
-            </label>
-
+          <div class="campo">
+            <label for="descripcion">Descripción</label>
             <textarea
               id="descripcion"
               th:field="*{descripcion}"
               rows="4"
               required
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none resize-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
             ></textarea>
           </div>
 
-          <!-- PRECIO -->
+          <div class="fila-campos">
+            <div class="campo">
+              <label for="precio">Precio (COP)</label>
+              <input
+                type="number"
+                id="precio"
+                th:field="*{precio}"
+                min="0"
+                required
+              />
+            </div>
 
-          <div>
-            <label
-              for="precio"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Precio
-            </label>
-
-            <input
-              type="number"
-              id="precio"
-              th:field="*{precio}"
-              min="0"
-              required
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-            />
+            <div class="campo">
+              <label for="stock">Stock</label>
+              <input
+                type="number"
+                id="stock"
+                th:field="*{stock}"
+                min="0"
+                required
+              />
+            </div>
           </div>
 
-          <!-- STOCK -->
-
-          <div>
-            <label
-              for="stock"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Stock
-            </label>
-
-            <input
-              type="number"
-              id="stock"
-              th:field="*{stock}"
-              min="0"
-              required
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-            />
-          </div>
-
-          <!-- GUARDAR -->
-
-          <div class="pt-3">
-            <button
-              type="submit"
-              class="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 active:scale-[0.99]"
-            >
-              Guardar producto
+          <div class="acciones">
+            <button type="submit" class="tecla tecla-enter">
+              Guardar producto <span class="leyenda" aria-hidden="true">↵</span>
             </button>
+            <a class="tecla" th:href="@{/producto/listar}">Cancelar</a>
           </div>
         </form>
       </div>
+    </main>
 
-      <!-- PIE -->
-
-      <div class="text-center mt-8">
-        <p class="text-xs text-slate-400">Administración de productos</p>
-      </div>
-    </div>
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>

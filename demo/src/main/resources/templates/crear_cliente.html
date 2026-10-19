@@ -1,139 +1,69 @@
 <!doctype html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
+  <head th:replace="~{fragmentos :: head('Crear usuario')}"></head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <body>
+    <header th:replace="~{fragmentos :: barra('usuarios')}"></header>
 
-    <title th:text="${titulo}">Crear usuario</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-
-  <body class="min-h-screen bg-slate-100 flex items-center justify-center">
-    <div class="w-full max-w-md px-6">
-      <div class="bg-white rounded-2xl shadow-xl p-8">
-        <div class="text-center mb-8">
-          <p class="text-sm font-medium text-blue-600 mb-1">
-            Panel de administrador
+    <main class="pagina pagina-angosta">
+      <div class="cabecera">
+        <div>
+          <h1>Crear usuario</h1>
+          <p>
+            La cuenta queda activa de inmediato. La persona completa sus datos
+            personales al iniciar sesión.
           </p>
-
-          <h1
-            th:text="${titulo}"
-            class="text-3xl font-bold text-slate-800"
-          ></h1>
-
-          <p class="text-slate-500 mt-2">Crear acceso para un nuevo usuario</p>
         </div>
+      </div>
 
-        <!-- ERROR -->
+      <div th:replace="~{fragmentos :: avisos}"></div>
 
-        <div
-          th:if="${error}"
-          class="mb-6 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-red-700"
-        >
-          <p th:text="${error}" class="text-sm font-medium"></p>
-        </div>
-
-        <!-- FORMULARIO -->
-
-        <form
-          th:action="@{/admin/crear-cliente}"
-          method="post"
-          class="space-y-5"
-        >
-          <!-- CORREO -->
-
-          <div>
-            <label
-              for="email"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Correo
-            </label>
-
+      <div class="hoja">
+        <form th:action="@{/admin/crear-cliente}" method="post" class="formulario">
+          <div class="campo">
+            <label for="email">Correo</label>
             <input
               type="email"
               id="email"
               name="email"
               required
+              autocomplete="off"
               placeholder="correo@ejemplo.com"
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
             />
           </div>
 
-          <!-- CONTRASEÑA -->
-
-          <div>
-            <label
-              for="password"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Contraseña inicial
-            </label>
-
+          <div class="campo">
+            <label for="password">Contraseña inicial</label>
             <input
               type="password"
               id="password"
               name="password"
               required
-              placeholder="Contraseña"
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+              autocomplete="new-password"
             />
+            <p class="campo-ayuda">
+              Compártela con la persona; podrá cambiarla desde su perfil.
+            </p>
           </div>
 
-          <!-- ROL -->
-
-          <div>
-            <label
-              for="rol"
-              class="block text-sm font-medium text-slate-700 mb-2"
-            >
-              Tipo de usuario
-            </label>
-
-            <select
-              id="rol"
-              name="rol"
-              required
-              class="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-            >
+          <div class="campo">
+            <label for="rol">Rol</label>
+            <select id="rol" name="rol" required>
               <option value="CLIENTE">Cliente</option>
-
               <option value="ADMIN">Administrador</option>
             </select>
           </div>
 
-          <!-- INFORMACIÓN -->
-
-          <div class="rounded-lg bg-slate-50 border border-slate-200 p-4">
-            <p class="text-sm text-slate-600">
-              El usuario podrá completar sus datos personales después de iniciar
-              sesión.
-            </p>
+          <div class="acciones">
+            <button type="submit" class="tecla tecla-enter">
+              Crear usuario <span class="leyenda" aria-hidden="true">↵</span>
+            </button>
+            <a class="tecla" th:href="@{/admin/usuarios}">Cancelar</a>
           </div>
-
-          <!-- BOTÓN -->
-
-          <button
-            type="submit"
-            class="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-          >
-            Crear usuario
-          </button>
         </form>
-
-        <!-- VOLVER -->
-
-        <div class="mt-6 text-center">
-          <a
-            th:href="@{/}"
-            class="text-sm font-semibold text-slate-500 hover:text-blue-600 hover:underline"
-          >
-            ← Volver al inicio
-          </a>
-        </div>
       </div>
-    </div>
+    </main>
+
+    <footer th:replace="~{fragmentos :: pie}"></footer>
   </body>
 </html>
