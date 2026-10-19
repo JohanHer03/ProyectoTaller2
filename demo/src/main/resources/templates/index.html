@@ -41,7 +41,14 @@
           th:href="@{/admin/usuarios}"
         >
           <h3>Usuarios</h3>
-          <p>Activa cuentas pendientes y asigna roles.</p>
+          <p
+            th:if="${solicitudesPassword != null and solicitudesPassword > 0}"
+            class="fuerte"
+            th:text="${solicitudesPassword == 1} ? '1 cambio de contraseña por aprobar.' : ${solicitudesPassword} + ' cambios de contraseña por aprobar.'"
+          ></p>
+          <p th:unless="${solicitudesPassword != null and solicitudesPassword > 0}">
+            Activa cuentas pendientes y asigna roles.
+          </p>
         </a>
 
         <a

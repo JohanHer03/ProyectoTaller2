@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.Modelos.Entity.Login;
 import com.example.demo.Modelos.Service.LoginService;
@@ -120,6 +121,50 @@ public class LoginController {
                 "Registro realizado. Debe esperar la aprobación de un administrador.");
 
         return "login";
+    }
+
+    @GetMapping("/recuperar")
+    public String recuperar() {
+
+        return "recuperar_password";
+    }
+
+    @PostMapping("/recuperar")
+    public String solicitarCambioPassword(
+            @RequestParam String email,
+            @RequestParam String nuevaPassword,
+            @RequestParam String confirmarPassword,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        model.addAttribute("email", email);
+
+        if (email.isBlank() || nuevaPassword.isBlank() || confirmarPassword.isBlank()) {
+
+            model.addAttribute(
+                    "error",
+                    "Todos los campos son obligatorios.");
+
+            return "recuperar_password";
+        }
+
+        if (!nuevaPassword.equals(confirmarPassword)) {
+
+            model.addAttribute(
+                    "error",
+                    "Las contraseñas no coinciden.");
+
+            return "recuperar_password";
+        }
+
+        loginService.solicitarCambioPassword(email.trim(), nuevaPassword);
+
+        // Mismo mensaje exista o no la cuenta, para no revelar qué correos están registrados
+        redirectAttributes.addFlashAttribute(
+                "mensaje",
+                "Solicitud enviada. Podrás entrar con la nueva contraseña cuando el administrador la apruebe.");
+
+        return "redirect:/login/";
     }
 
     @GetMapping("/salir")

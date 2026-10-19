@@ -19,6 +19,49 @@
         </div>
       </div>
 
+      <div th:replace="~{fragmentos :: avisos}"></div>
+
+      <!-- Solicitudes de cambio de contraseña hechas desde el login -->
+      <th:block th:with="solicitudes=${usuarios.?[passwordSolicitada != null]}">
+      <section
+        class="hoja hoja-tabla seccion"
+        th:if="${!#lists.isEmpty(solicitudes)}"
+      >
+        <div class="seccion-cabecera">
+          <h2 class="hoja-titulo">Cambios de contraseña por aprobar</h2>
+          <p class="hoja-nota">
+            Confirma con la persona que la solicitud es suya antes de aprobarla.
+          </p>
+        </div>
+
+        <div class="tabla-desliza">
+          <table class="tabla">
+            <tbody>
+              <tr th:each="usuario : ${solicitudes}">
+                <td class="fuerte" th:text="${usuario.email}"></td>
+                <td>
+                  <div class="acciones">
+                    <form th:action="@{/admin/password/aprobar}" method="post">
+                      <input type="hidden" name="id" th:value="${usuario.id}" />
+                      <button type="submit" class="tecla tecla-sm tecla-enter">
+                        Aprobar
+                      </button>
+                    </form>
+                    <form th:action="@{/admin/password/rechazar}" method="post">
+                      <input type="hidden" name="id" th:value="${usuario.id}" />
+                      <button type="submit" class="tecla tecla-sm tecla-peligro">
+                        Rechazar
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      </th:block>
+
       <div class="hoja hoja-tabla">
         <div class="tabla-desliza">
           <table class="tabla">
